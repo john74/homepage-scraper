@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel
 
 class Article(BaseModel):
-  id: Optional[UUID] = uuid4
+  id: Optional[UUID] = uuid4()
   author: Optional[str] = str
   post_date: Optional[str] = str
   post_time: Optional[str] = str
