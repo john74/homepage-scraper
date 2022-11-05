@@ -35,5 +35,14 @@ async def root():
 
 @app.get("/api/articles")
 async def fetch_articles():
-  """ Return the contents of articles database """
-  return articles;
+  """ Returns the contents of articles database """
+  return articles
+
+@app.post("/api/articles")
+async def register_article(article: Article):
+  """
+  Adds and article of type Article to the articles database.
+  Returns the article titles
+  """
+  article.append(article)
+  return {"article_title": article.article_title}
