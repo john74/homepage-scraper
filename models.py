@@ -1,16 +1,14 @@
-from typing import Optional
-from uuid import UUID, uuid4
 from pydantic import BaseModel
 
 class Article(BaseModel):
   """
   A class to represent the Article model.
   """
-  id: Optional[UUID] = uuid4()
-  author: Optional[str] = str
-  post_date: Optional[str] = str
-  post_time: Optional[str] = str
+  website: str
+  author: str
+  post_date: str
+  post_time: str
   article_title: str
   article_body: str
-  article_img_link: Optional[str] = str
-  article_small_img_link: Optional[str] = str
+  article_img_link: str
+  article_small_img_link: str
