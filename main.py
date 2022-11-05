@@ -3,9 +3,10 @@ from typing import List
 from fastapi import FastAPI
 
 from models import Article
-
+# run server as uvicorn main:app --port 8086  --reload
 app = FastAPI()
-db: List[Article] = [
+articles: List[Article] = [
+  # articles database of type List. The list is of type Article
   Article(
     id = uuid4(),
     author = "Article 1",
@@ -32,5 +33,7 @@ db: List[Article] = [
 async def root():
   return {"hello:world"}
 
-
-# uvicorn main:app --port 8086  --reload
+@app.get("/api/articles")
+async def fetch_articles():
+  """ Return the contents of articles database """
+  return articles;
