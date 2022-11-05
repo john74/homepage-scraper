@@ -8,7 +8,7 @@ app = FastAPI()
 articles: List[Article] = [
   # articles database of type List. The list is of type Article
   Article(
-    id = uuid4(),
+    website = "sport24",
     author = "Article 1",
     post_date = "05.11.2022",
     post_time = "18:51",
@@ -18,7 +18,7 @@ articles: List[Article] = [
     article_small_img_link = "https://i.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
   ),
     Article(
-    id = uuid4(),
+    website = "sport24",
     author = "Article 2",
     post_date = "05.11.2022",
     post_time = "18:51",
