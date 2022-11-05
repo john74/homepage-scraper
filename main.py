@@ -44,5 +44,5 @@ async def register_article(article: Article):
   Adds and article of type Article to the articles database.
   Returns the article titles
   """
-  article.append(article)
+  articles.append(article)
   return {"article_title": article.article_title}
