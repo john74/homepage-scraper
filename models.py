@@ -10,6 +10,7 @@ class Article(BaseModel):
   author: Optional[str] = str
   post_date: Optional[str] = str
   post_time: Optional[str] = str
-  article_text: str
+  article_title: str
+  article_body: str
   article_img_link: Optional[str] = str
   article_small_img_link: Optional[str] = str
