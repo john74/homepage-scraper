@@ -4,7 +4,7 @@ class Article(BaseModel):
   """
   A class to represent the Article model.
   """
-  website: str
+  website: str 
   author: str
   post_date: str
   post_time: str
