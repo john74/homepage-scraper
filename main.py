@@ -30,10 +30,6 @@ articles: List[Article] = [
   # )
 ]
 
-@app.get("/")
-async def root():
-  return {"hello:world"}
-
 @app.get("/api/articles")
 async def fetch_articles():
   """ Returns the contents of articles database """
