@@ -29,7 +29,6 @@ def get_sport24_team_articles(teams):
 
     articles.append({
       "website": "sport24",
-      "team": team,
       "author": content.find_element(By.CSS_SELECTOR, '.article-single__byline__author').text.strip(),
       "post_date": content.find_element(By.CSS_SELECTOR, '.article-single__byline > time').text.split(' ')[0].strip(),
       "post_time": content.find_element(By.CSS_SELECTOR, '.article-single__byline > time').text.split(' ')[-1].strip(),
