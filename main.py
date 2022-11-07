@@ -3,7 +3,7 @@ from typing import List
 from fastapi import FastAPI
 
 from models import Article
-from scraper import get_sport24_article, get_sport24_greek_team_names
+from scraper import get_sport24_article, get_sport24_greek_team_names, get_sport24_international_team_names
 # run server as uvicorn main:app --port 8086  --reload
 app = FastAPI()
 articles: List[Article] = [
@@ -45,13 +45,13 @@ async def fetch_greek_football_articles():
       articles.append(article)
   return articles
 
-@app.get("/api/sports/greek/football/articles")
-async def fetch_greek_football_articles():
+@app.get("/api/sports/international/football/articles")
+async def fetch_international_football_articles():
   """ Returns the contents of the article """
   articles = []
   titles = []
 
-  for team in ['panathinaikos', 'aek', 'olympiacos', 'paok', 'aris']:
+  for team in get_sport24_international_team_names():
     article = get_sport24_article(f'football/{team}')
     # Teams can share an article. If that's the case don't include it
     if article['title'] not in titles:
