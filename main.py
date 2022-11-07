@@ -3,7 +3,7 @@ from typing import List
 from fastapi import FastAPI
 
 from models import Article
-from scraper import get_sport24_greek_sports_articles
+from scraper import get_sport24_article
 # run server as uvicorn main:app --port 8086  --reload
 app = FastAPI()
 articles: List[Article] = [
@@ -30,11 +30,10 @@ articles: List[Article] = [
   # )
 ]
 
-@app.get("/api/sports/articles/greek")
+@app.get("/api/sports/football/articles/panathinaikos")
 async def fetch_sports_articles():
   """ Returns the contents of the sports articles """
-  teams = ['panathinaikos', 'olympiacos', 'aek', 'paok', 'aris']
-  return get_sport24_greek_sports_articles(teams)
+  return get_sport24_article('football/panathinaikos')
 
 @app.post("/api/sports/articles/greek")
 async def register_sports_article(article: Article):
