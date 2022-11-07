@@ -28,4 +28,4 @@ def get_sport24_article(uri):
     "article_body": [{tag.tag_name:tag.text} for tag in content.find_elements(By.CSS_SELECTOR, '.article-single__body > h2,p')]
   }
 
-driver.quit()
+# driver.quit()
