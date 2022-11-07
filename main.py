@@ -30,16 +30,10 @@ articles: List[Article] = [
   # )
 ]
 
-@app.get("/api/sports/football/articles/panathinaikos")
-async def fetch_sports_articles():
-  """ Returns the contents of the sports articles """
-  return get_sport24_article('football/panathinaikos')
-
-@app.post("/api/sports/articles/greek")
-async def register_sports_article(article: Article):
-  """
-  Adds and article of type Article to the articles database.
-  Returns the article titles
-  """
-  articles.append(article)
-  return {"article_title": article.article_title}
+@app.get("/api/sports/greek/football/articles")
+async def fetch_greek_football_articles():
+  """ Returns the contents of the article """
+  articles = []
+  for team in ['panathinaikos', 'aek', 'olympiacos', 'paok', 'aris']:
+    articles.append(get_sport24_article(f'football/{team}'))
+  return articles
