@@ -12,7 +12,7 @@ option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
 teams = ['panathinaikos', 'olympiacos', 'aek', 'paok', 'aris']
-def get_sport24_team_articles(teams):
+def get_sport24_greek_sports_articles(teams):
   articles = []
   titles = []
   for team in teams:
@@ -41,4 +41,5 @@ def get_sport24_team_articles(teams):
   driver.quit()
   return articles
 
-# get_sport24_team_articles(teams)
+def get_sport24_team_articles(teams):
+  pass
