@@ -19,7 +19,7 @@ def get_sport24_article(uri):
 
   return {
     "website": "sport24",
-    "author": content.find_element(By.CSS_SELECTOR, '.article-single__byline__author').text.strip(),
+    "author": content.find_element(By.CSS_SELECTOR, '.article-single__byline span').text,
     "post_date": content.find_element(By.CSS_SELECTOR, '.article-single__byline > time').text.split(' ')[0].strip(),
     "post_time": content.find_element(By.CSS_SELECTOR, '.article-single__byline > time').text.split(' ')[-1].strip(),
     "article_img_link": content.find_element(By.CSS_SELECTOR, '.article-single__image--main > img').get_attribute('srcset').split(',')[1].strip().split(' ')[0],
