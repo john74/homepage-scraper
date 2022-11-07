@@ -30,10 +30,24 @@ articles: List[Article] = [
   # )
 ]
 
+# @app.get("/api/sports/greek/football/articles")
+# async def fetch_greek_football_articles():
+#   """ Returns the contents of the article """
+#   articles = []
+#   for team in ['panathinaikos', 'aek', 'olympiacos', 'paok', 'aris']:
+#     articles.append(get_sport24_article(f'football/{team}'))
+#   return articles
+
 @app.get("/api/sports/greek/football/articles")
 async def fetch_greek_football_articles():
   """ Returns the contents of the article """
   articles = []
+  titles = []
+
   for team in ['panathinaikos', 'aek', 'olympiacos', 'paok', 'aris']:
-    articles.append(get_sport24_article(f'football/{team}'))
+    article = get_sport24_article(f'football/{team}')
+    # Teams can share an article. If that's the case don't include it
+    if article['title'] not in titles:
+      titles.append(article['title'])
+      articles.append(article)
   return articles
