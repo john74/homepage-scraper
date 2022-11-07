@@ -22,10 +22,10 @@ def get_sport24_article(uri):
     "author": content.find_element(By.CSS_SELECTOR, '.article-single__byline span').text,
     "post_date": content.find_element(By.CSS_SELECTOR, '.article-single__byline > time').text.split(' ')[0].strip(),
     "post_time": content.find_element(By.CSS_SELECTOR, '.article-single__byline > time').text.split(' ')[-1].strip(),
-    "article_img_link": content.find_element(By.CSS_SELECTOR, '.article-single__image--main > img').get_attribute('srcset').split(',')[1].strip().split(' ')[0],
-    "article_small_img_link": content.find_element(By.CSS_SELECTOR, '.article-single__image--main > img').get_attribute('srcset').split(',')[0].split(' ')[0],
-    "article_title": content.find_element(By.CSS_SELECTOR, '.article-single__title').text.strip(),
-    "article_body": [{tag.tag_name:tag.text} for tag in content.find_elements(By.CSS_SELECTOR, '.article-single__body > h2,p')]
+    "img_link": content.find_element(By.CSS_SELECTOR, '.article-single__image--main > img').get_attribute('srcset').split(',')[1].strip().split(' ')[0],
+    "small_img_link": content.find_element(By.CSS_SELECTOR, '.article-single__image--main > img').get_attribute('srcset').split(',')[0].split(' ')[0],
+    "title": content.find_element(By.CSS_SELECTOR, '.article-single__title').text.strip(),
+    "body": [{tag.tag_name:tag.text} for tag in content.find_elements(By.CSS_SELECTOR, '.article-single__body > h2,p')]
   }
 
 # driver.quit()
