@@ -11,6 +11,11 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
+def get_sport24_greek_team_names():
+  driver.get('https://www.sport24.gr')
+  teams = driver.find_elements(By.CSS_SELECTOR, '.main-menu__group--teams_football_greece [itemprop="url"')
+  return [team.get_attribute('href').split('/')[-1].strip() for team in teams]
+
 def get_sport24_article(uri):
   driver.get(f'https://www.sport24.gr/{uri}')
   url = driver.find_element(By.CSS_SELECTOR, '.teaser__content > :first-child .article__image > a').get_attribute('href').strip()
