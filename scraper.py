@@ -22,6 +22,16 @@ def get_sport24_greek_competitions_names():
         names.append(name.strip())
     return names
 
+def get_sport24_international_competitions_names():
+    driver.get(sport24.BASE_URL)
+    competitions = driver.find_elements(By.CSS_SELECTOR, sport24.INTERNATIONAL_COMPETITIONS_SELECTOR)
+    names = []
+    for competition in competitions:
+        href = competition.get_attribute('href')
+        name = href.split('/')[-1]
+        names.append(name.strip())
+    return names
+
 def get_sport24_greek_team_names():
     driver.get(sport24.BASE_URL)
     teams = driver.find_elements(By.CSS_SELECTOR, sport24.GREEK_TEAMS_SELECTOR)
