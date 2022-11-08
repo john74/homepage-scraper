@@ -3,6 +3,7 @@ The urls and the selectors for all operations in sport24 website
 """
 BASE_URL = 'https://www.sport24.gr/'
 GREEK_COMPETITIONS_SELECTOR = '.main-menu__side-panel-container > :nth-child(3) > div > :first-child [itemprop="url"]'
+INTERNATIONAL_COMPETITIONS_SELECTOR = '.main-menu__side-panel-container > :nth-child(3) > div > :nth-child(2) [itemprop="url"]'
 GREEK_TEAMS_SELECTOR = '.main-menu__group--teams_football_greece [itemprop="url"]'
 INTERNATIONAL_TEAMS_SELECTOR = '.main-menu__group--teams_football_international [itemprop="url"]'
 ARTICLE_URL_SELECTOR = '.teaser__content > :first-child .article__image > a'
