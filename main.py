@@ -30,54 +30,38 @@ articles_db: List[Article] = [
   # )
 ]
 
-@app.get("/api/sports/greek/football/competitions/articles")
-async def fetch_greek_football_competitions_articles():
+async def get_sport24_articles(names):
     """ Returns the contents of the article """
     articles = []
     titles = []
-    for competition in get_sport24_greek_competitions_names():
-        article = get_sport24_article(f'football/{competition}')
+    for name in names:
+        article = get_sport24_article(f'football/{name}')
         # Teams can share an article. If that's the case don't include it
         if article['title'] not in titles:
             titles.append(article['title'])
             articles.append(article)
     return articles
+
+@app.get("/api/sports/greek/football/competitions/articles")
+async def fetch_greek_football_competitions_articles():
+    """ Returns the contents of the article """
+    names = get_sport24_greek_competitions_names()
+    return await get_sport24_articles(names)
 
 @app.get("/api/sports/international/football/competitions/articles")
 async def fetch_international_football_competitions_articles():
     """ Returns the contents of the article """
-    articles = []
-    titles = []
-    for competition in get_sport24_international_competitions_names():
-        article = get_sport24_article(f'football/{competition}')
-        # Teams can share an article. If that's the case don't include it
-        if article['title'] not in titles:
-            titles.append(article['title'])
-            articles.append(article)
-    return articles
+    names = get_sport24_international_competitions_names()
+    return await get_sport24_articles(names)
 
 @app.get("/api/sports/greek/football/teams/articles")
 async def fetch_greek_football_teams_articles():
     """ Returns the contents of the article """
-    articles = []
-    titles = []
-    for team in get_sport24_greek_team_names():
-        article = get_sport24_article(f'football/{team}')
-        # Teams can share an article. If that's the case don't include it
-        if article['title'] not in titles:
-            titles.append(article['title'])
-            articles.append(article)
-    return articles
+    names = get_sport24_greek_team_names()
+    return await get_sport24_articles(names)
 
 @app.get("/api/sports/international/football/teams/articles")
 async def fetch_international_football_teams_articles():
     """ Returns the contents of the article """
-    articles = []
-    titles = []
-    for team in get_sport24_international_team_names():
-        article = get_sport24_article(f'football/{team}')
-        # Teams can share an article. If that's the case don't include it
-        if article['title'] not in titles:
-            titles.append(article['title'])
-            articles.append(article)
-    return articles
+    names = get_sport24_international_team_names()
+    return await get_sport24_articles(names)
