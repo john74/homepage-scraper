@@ -3,7 +3,7 @@ from typing import List
 from fastapi import FastAPI
 
 from models import Article
-from scraper import get_sport24_article, get_sport24_greek_team_names, get_sport24_international_team_names
+from scraper import get_sport24_article, get_sport24_greek_team_names, get_sport24_international_team_names, get_sport24_greek_competitions_names
 # run server as uvicorn main:app --port 8086  --reload
 app = FastAPI()
 articles_db: List[Article] = [
@@ -30,12 +30,21 @@ articles_db: List[Article] = [
   # )
 ]
 
-@app.get("/api/sports/greek/football")
-async def fetch_greek_football():
-    pass
+@app.get("/api/sports/greek/football/competitions/articles")
+async def fetch_greek_football_competitions_articles():
+    """ Returns the contents of the article """
+    articles = []
+    titles = []
+    for competition in get_sport24_greek_competitions_names():
+        article = get_sport24_article(f'football/{competition}')
+        # Teams can share an article. If that's the case don't include it
+        if article['title'] not in titles:
+            titles.append(article['title'])
+            articles.append(article)
+    return articles
 
-@app.get("/api/sports/greek/football/articles")
-async def fetch_greek_football_articles():
+@app.get("/api/sports/greek/football/teams/articles")
+async def fetch_greek_football_teams_articles():
     """ Returns the contents of the article """
     articles = []
     titles = []
@@ -47,8 +56,8 @@ async def fetch_greek_football_articles():
             articles.append(article)
     return articles
 
-@app.get("/api/sports/international/football/articles")
-async def fetch_international_football_articles():
+@app.get("/api/sports/international/football/teams/articles")
+async def fetch_international_football_teams_articles():
     """ Returns the contents of the article """
     articles = []
     titles = []
