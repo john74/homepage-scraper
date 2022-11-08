@@ -4,7 +4,7 @@ from typing import List
 from fastapi import FastAPI
 
 from models import Article
-from scraper import get_sport24_article, get_sport24_greek_team_names, get_sport24_international_team_names, get_sport24_greek_competitions_names, get_sport24_international_competitions_names
+import scraper as sport24
 # run server as uvicorn main:app --port 8086  --reload
 app = FastAPI()
 articles_db: List[Article] = [
@@ -33,12 +33,12 @@ articles_db: List[Article] = [
 
 
 async def get_sport24_articles(names):
-    """ Returns a list of articles for a specific team of competition"""
+    """ Returns a list of articles for a specific team or competition"""
     articles = []
     titles = []
     today = datetime.strptime(date.today().strftime('%d.%m.%Y'), '%d.%m.%Y')
     for name in names:
-        article = get_sport24_article(f'football/{name}')
+        article = sport24.get_sport24_article(f'football/{name}')
         is_unique = article['title'] not in titles
         days_since_post = (today - datetime.strptime(article['date'], '%d.%m.%Y')).days
         is_at_most_a_week = days_since_post <= 7
@@ -54,7 +54,7 @@ async def fetch_greek_football_competitions_articles():
     Returns the articles of all available greek football
     competitions in sport24.gr
     """
-    names = get_sport24_greek_competitions_names()
+    names = sport24.get_sport24_greek_competitions_names()
     return await get_sport24_articles(names)
 
 @app.get("/api/sports/international/football/competitions/articles")
@@ -63,7 +63,7 @@ async def fetch_international_football_competitions_articles():
     Returns the articles of all available international football
     competitions in sport24.gr
     """
-    names = get_sport24_international_competitions_names()
+    names = sport24.get_sport24_international_competitions_names()
     return await get_sport24_articles(names)
 
 @app.get("/api/sports/greek/football/teams/articles")
@@ -72,7 +72,7 @@ async def fetch_greek_football_teams_articles():
     Returns the articles of all available greek football
     teams in sport24.gr
     """
-    names = get_sport24_greek_team_names()
+    names = sport24.get_sport24_greek_team_names()
     return await get_sport24_articles(names)
 
 @app.get("/api/sports/international/football/teams/articles")
@@ -81,5 +81,5 @@ async def fetch_international_football_teams_articles():
     Returns the articles of all available international football
     teams in sport24.gr
     """
-    names = get_sport24_international_team_names()
+    names = sport24.get_sport24_international_team_names()
     return await get_sport24_articles(names)
