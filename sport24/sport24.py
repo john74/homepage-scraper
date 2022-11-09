@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from . import scraper
 router = APIRouter()
 
-async def get_sport24_articles(names):
+async def get_articles(names):
     """ Returns a list of articles for a specific team or competition"""
     articles = []
     titles = []
@@ -27,7 +27,7 @@ async def fetch_greek_football_competitions_articles():
     competitions in sport24.gr
     """
     names = scraper.get_greek_competitions_names()
-    return await get_sport24_articles(names)
+    return await get_articles(names)
 
 @router.get("/api/sports/international/football/competitions/articles")
 async def fetch_international_football_competitions_articles():
@@ -36,7 +36,7 @@ async def fetch_international_football_competitions_articles():
     competitions in sport24.gr
     """
     names = scraper.get_international_competitions_names()
-    return await get_sport24_articles(names)
+    return await get_articles(names)
 
 @router.get("/api/sports/greek/football/teams/articles")
 async def fetch_greek_football_teams_articles():
@@ -45,7 +45,7 @@ async def fetch_greek_football_teams_articles():
     teams in sport24.gr
     """
     names = scraper.get_greek_team_names()
-    return await get_sport24_articles(names)
+    return await get_articles(names)
 
 @router.get("/api/sports/international/football/teams/articles")
 async def fetch_international_football_teams_articles():
@@ -54,4 +54,4 @@ async def fetch_international_football_teams_articles():
     teams in sport24.gr
     """
     names = scraper.get_international_team_names()
-    return await get_sport24_articles(names)
+    return await get_articles(names)
