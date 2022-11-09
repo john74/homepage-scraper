@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from . import scraper
 router = APIRouter()
 
 async def get_sport24_articles(names):
@@ -24,7 +25,7 @@ async def fetch_greek_football_competitions_articles():
     Returns the articles of all available greek football
     competitions in sport24.gr
     """
-    names = sport24.get_greek_competitions_names()
+    names = scraper.get_greek_competitions_names()
     return await get_sport24_articles(names)
 
 @router.get("/api/sports/international/football/competitions/articles")
@@ -33,7 +34,7 @@ async def fetch_international_football_competitions_articles():
     Returns the articles of all available international football
     competitions in sport24.gr
     """
-    names = sport24.get_international_competitions_names()
+    names = scraper.get_international_competitions_names()
     return await get_sport24_articles(names)
 
 @router.get("/api/sports/greek/football/teams/articles")
@@ -42,7 +43,7 @@ async def fetch_greek_football_teams_articles():
     Returns the articles of all available greek football
     teams in sport24.gr
     """
-    names = sport24.get_greek_team_names()
+    names = scraper.get_greek_team_names()
     return await get_sport24_articles(names)
 
 @router.get("/api/sports/international/football/teams/articles")
@@ -51,5 +52,5 @@ async def fetch_international_football_teams_articles():
     Returns the articles of all available international football
     teams in sport24.gr
     """
-    names = sport24.get_international_team_names()
+    names = scraper.get_international_team_names()
     return await get_sport24_articles(names)
