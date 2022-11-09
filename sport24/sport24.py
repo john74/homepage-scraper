@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from fastapi import APIRouter
 
 from . import scraper
@@ -9,7 +10,7 @@ async def get_sport24_articles(names):
     titles = []
     today = datetime.strptime(date.today().strftime('%d.%m.%Y'), '%d.%m.%Y')
     for name in names:
-        article = sport24.get_article(f'football/{name}')
+        article = scraper.get_article(f'football/{name}')
         is_unique = article['title'] not in titles
         days_since_post = (today - datetime.strptime(article['date'], '%d.%m.%Y')).days
         is_at_most_a_week = days_since_post <= 7
