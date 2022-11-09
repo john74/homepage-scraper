@@ -16,14 +16,14 @@ async def get_articles(names):
         ": Η βαθμολογία ", "Αθλητικές μεταδόσεις:"
     ]
 
-    today = datetime.strptime(date.today().strftime('%d.%m.%Y'), '%d.%m.%Y')
+    today = datetime.strptime(date.today().strftime(variables.DATE_FORMAT), variables.DATE_FORMAT)
     for name in names:
         article = scraper.get_article(f'football/{name}')
         if article is None:
             continue
         title = article['title']
         is_unique = title not in titles
-        days_since_post = (today - datetime.strptime(article['date'], '%d.%m.%Y')).days
+        days_since_post = (today - datetime.strptime(article['date'], variables.DATE_FORMAT)).days
         is_at_most_a_week = days_since_post <= 7
 
         title_is_accepted = True
