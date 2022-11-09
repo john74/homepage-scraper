@@ -5,7 +5,11 @@ from . import scraper
 router = APIRouter()
 
 async def get_articles(names):
-    """ Returns a list of articles for a specific team or competition"""
+    """
+    Returns a list of articles. An article is accepted
+    if it is unique, not older than a week and the title
+    doesn't contain a substring from rejected_titles_substrings
+    """
     articles = []
     titles = []
     rejected_titles_substrings = [": η βαθμολογία "]
