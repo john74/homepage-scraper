@@ -12,42 +12,12 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_greek_competitions_names():
+def get_category_names(selector):
     driver.get(variables.BASE_URL)
-    competitions = driver.find_elements(By.CSS_SELECTOR, variables.GREEK_COMPETITIONS_SELECTOR)
+    elements = driver.find_elements(By.CSS_SELECTOR, selector)
     names = []
-    for competition in competitions:
-        href = competition.get_attribute('href')
-        name = href.split('/')[-1]
-        names.append(name.strip())
-    return names
-
-def get_international_competitions_names():
-    driver.get(variables.BASE_URL)
-    competitions = driver.find_elements(By.CSS_SELECTOR, variables.INTERNATIONAL_COMPETITIONS_SELECTOR)
-    names = []
-    for competition in competitions:
-        href = competition.get_attribute('href')
-        name = href.split('/')[-1]
-        names.append(name.strip())
-    return names
-
-def get_greek_team_names():
-    driver.get(variables.BASE_URL)
-    teams = driver.find_elements(By.CSS_SELECTOR, variables.GREEK_TEAMS_SELECTOR)
-    names = []
-    for team in teams:
-        href = team.get_attribute('href')
-        name = href.split('/')[-1]
-        names.append(name.strip())
-    return names
-
-def get_international_team_names():
-    driver.get(variables.BASE_URL)
-    teams = driver.find_elements(By.CSS_SELECTOR, variables.INTERNATIONAL_TEAMS_SELECTOR)
-    names = []
-    for team in teams:
-        href = team.get_attribute('href')
+    for element in elements:
+        href = element.get_attribute('href')
         name = href.split('/')[-1]
         names.append(name.strip())
     return names
