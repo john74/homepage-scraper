@@ -12,17 +12,25 @@ async def get_articles(names):
     """
     articles = []
     titles = []
-    rejected_titles_substrings = [": η βαθμολογία "]
+    rejected_titles_substrings = [
+        ": Η βαθμολογία ", "Αθλητικές μεταδόσεις:"
+    ]
+
     today = datetime.strptime(date.today().strftime('%d.%m.%Y'), '%d.%m.%Y')
     for name in names:
         article = scraper.get_article(f'football/{name}')
         if article is None:
             continue
-        title = article['title'].lower()
+        title = article['title']
         is_unique = title not in titles
         days_since_post = (today - datetime.strptime(article['date'], '%d.%m.%Y')).days
         is_at_most_a_week = days_since_post <= 7
-        title_is_accepted = any(substring not in title for substring in rejected_titles_substrings)
+
+        title_is_accepted = True
+        for substring in rejected_titles_substrings:
+            if substring.lower() in title.lower():
+                title_is_accepted = False
+                break
 
         if is_unique and is_at_most_a_week and title_is_accepted:
             titles.append(title)
