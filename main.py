@@ -4,7 +4,7 @@ from typing import List
 from fastapi import FastAPI
 
 from models import Article
-import scraper as sport24
+import sport24_scraper as sport24
 # run server as uvicorn main:app --port 8086  --reload
 app = FastAPI()
 articles_db: List[Article] = [
