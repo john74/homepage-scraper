@@ -16,6 +16,8 @@ async def get_articles(names):
     today = datetime.strptime(date.today().strftime('%d.%m.%Y'), '%d.%m.%Y')
     for name in names:
         article = scraper.get_article(f'football/{name}')
+        if article is None:
+            continue
         title = article['title'].lower()
         is_unique = title not in titles
         days_since_post = (today - datetime.strptime(article['date'], '%d.%m.%Y')).days
