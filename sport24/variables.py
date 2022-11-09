@@ -7,7 +7,7 @@ INTERNATIONAL_COMPETITIONS_SELECTOR = '.main-menu__side-panel-container > :nth-c
 GREEK_TEAMS_SELECTOR = '.main-menu__group--teams_football_greece [itemprop="url"]'
 INTERNATIONAL_TEAMS_SELECTOR = '.main-menu__group--teams_football_international [itemprop="url"]'
 ARTICLE_URL_SELECTOR = '.teaser__content > :first-child .article__image > a'
-ARTICLE_CONTENT_SELECTOR = '.article-single'
+ARTICLE_CONTENT_SELECTOR = '#article-container'
 AUTHOR_SELECTOR = '.article-single__byline span'
 DATE_SELECTOR = '.article-single__byline > time'
 TIME_SELECTOR = '.article-single__byline > time'
