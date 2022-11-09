@@ -1,4 +1,4 @@
-import os
+import os, re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -24,7 +24,8 @@ def get_category_names(selector):
 
 def get_article(uri):
     driver.get(f'{variables.BASE_URL}{uri}')
-    url = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_URL_SELECTOR).get_attribute('href').strip()
+    anchor_element = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_URL_SELECTOR)
+    url = anchor_element.get_attribute('href').strip()
     driver.get(url)
 
     try:
@@ -32,14 +33,32 @@ def get_article(uri):
     except Exception:
         return
 
+    author = content.find_element(By.CSS_SELECTOR, variables.AUTHOR_SELECTOR).text
+    datetime = content.find_element(By.CSS_SELECTOR, variables.DATE_SELECTOR).text
+    date = datetime.split(' ')[0]
+    time = datetime.split(' ')[-1]
+    image_element = content.find_element(By.CSS_SELECTOR, variables.IMAGE_SELECTOR)
+    images = re.findall('(https?.+\\.+\\w+)', image_element.get_attribute('srcset'))
+    small_image = images[0]
+    medium_image = images[1]
+    large_image = images[3]
+    title = content.find_element(By.CSS_SELECTOR, variables.TITLE_SELECTOR).text
+
+    body = []
+    for tag in content.find_elements(By.CSS_SELECTOR, variables.BODY_SELECTOR):
+        text = tag.text
+        if len(text):
+            body.append(text.strip())
+
     return {
-        "author": content.find_element(By.CSS_SELECTOR, variables.AUTHOR_SELECTOR).text,
-        "date": content.find_element(By.CSS_SELECTOR, variables.DATE_SELECTOR).text.split(' ')[0].strip(),
-        "time": content.find_element(By.CSS_SELECTOR, variables.TIME_SELECTOR).text.split(' ')[-1].strip(),
-        "img": content.find_element(By.CSS_SELECTOR, variables.IMAGE_SELECTOR).get_attribute('srcset').split(',')[1].strip().split(' ')[0],
-        "thumbnail": content.find_element(By.CSS_SELECTOR, variables.THUMBNAIL_SELECTOR).get_attribute('srcset').split(',')[0].split(' ')[0],
-        "title": content.find_element(By.CSS_SELECTOR, variables.TITLE_SELECTOR).text.strip(),
-        "body": [{tag.tag_name:tag.text} for tag in content.find_elements(By.CSS_SELECTOR, variables.BODY_SELECTOR)]
+        "author": author.strip(),
+        "date": date.strip(),
+        "time": time.strip(),
+        "small_image": small_image.strip(),
+        "medium_image": medium_image.strip(),
+        "large_image": large_image.strip(),
+        "title": title.strip(),
+        "body": body
     }
 
 # driver.quit()
