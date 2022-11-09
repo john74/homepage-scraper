@@ -26,7 +26,11 @@ def get_article(uri):
     driver.get(f'{variables.BASE_URL}{uri}')
     url = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_URL_SELECTOR).get_attribute('href').strip()
     driver.get(url)
-    content = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_CONTENT_SELECTOR)
+
+    try:
+        content = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_CONTENT_SELECTOR)
+    except Exception:
+        return
 
     return {
         "author": content.find_element(By.CSS_SELECTOR, variables.AUTHOR_SELECTOR).text,
