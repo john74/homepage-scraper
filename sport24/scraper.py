@@ -34,9 +34,9 @@ def get_article(uri):
         return
 
     author = content.find_element(By.CSS_SELECTOR, variables.AUTHOR_SELECTOR).text
-    datetime = content.find_element(By.CSS_SELECTOR, variables.DATE_SELECTOR).text
-    date = datetime.split(' ')[0]
-    time = datetime.split(' ')[-1]
+    datetime = content.find_element(By.CSS_SELECTOR, variables.DATE_SELECTOR).text.split(' ')
+    date = datetime[0]
+    time = datetime[-1]
     image_element = content.find_element(By.CSS_SELECTOR, variables.IMAGE_SELECTOR)
     images = re.findall('(https?.+\\.+\\w+)', image_element.get_attribute('srcset'))
     small_image = images[0]
@@ -45,7 +45,8 @@ def get_article(uri):
     title = content.find_element(By.CSS_SELECTOR, variables.TITLE_SELECTOR).text
 
     body = []
-    for tag in content.find_elements(By.CSS_SELECTOR, variables.BODY_SELECTOR):
+    article_body = content.find_elements(By.CSS_SELECTOR, variables.BODY_SELECTOR)
+    for tag in article_body:
         text = tag.text
         if len(text):
             body.append(text.strip())
