@@ -1,4 +1,3 @@
-# from datetime import datetime, date
 from fastapi import APIRouter
 
 from . import scraper
