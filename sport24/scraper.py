@@ -65,6 +65,7 @@ def get_article(category_url):
         return
 
     return {
+        "url": article_url,
         "author": author.strip(),
         "date": post_date.strip(),
         "time": post_time.strip(),
