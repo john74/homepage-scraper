@@ -43,9 +43,9 @@ def get_article(category_url):
         return
 
     author = content.find_element(By.CSS_SELECTOR, ARTICLE['author']).text
-    datetime = content.find_element(By.CSS_SELECTOR, ARTICLE['datetime']).text.split(' ')
-    date = datetime[0]
-    time = datetime[-1]
+    date_time = content.find_element(By.CSS_SELECTOR, ARTICLE['datetime']).text.split(' ')
+    post_date = date_time[0]
+    post_time = date_time[-1]
     image_element = content.find_element(By.CSS_SELECTOR, ARTICLE['image'])
     images = re.findall('(https?.+\\.+\\w+)', image_element.get_attribute('srcset'))
     small_image = images[0]
@@ -65,8 +65,8 @@ def get_article(category_url):
 
     return {
         "author": author.strip(),
-        "date": date.strip(),
-        "time": time.strip(),
+        "date": post_date.strip(),
+        "time": post_time.strip(),
         "small_image": small_image.strip(),
         "medium_image": medium_image.strip(),
         "large_image": large_image.strip(),
