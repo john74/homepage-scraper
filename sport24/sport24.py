@@ -43,7 +43,7 @@ async def fetch_greek_football_competitions_articles():
     Returns the articles of all available greek football
     competitions in sport24.gr
     """
-    category_urls = scraper.get_category_urls(variables.GREEK_COMPETITIONS_SELECTOR)
+    category_urls = scraper.get_category_urls(variables.GREEK_FOOTBALL_COMPETITIONS_SELECTOR)
     return await get_articles(category_urls)
 
 @router.get("/api/sports/international/football/competitions/articles")
@@ -52,7 +52,7 @@ async def fetch_international_football_competitions_articles():
     Returns the articles of all available international football
     competitions in sport24.gr
     """
-    category_urls = scraper.get_category_urls(variables.INTERNATIONAL_COMPETITIONS_SELECTOR)
+    category_urls = scraper.get_category_urls(variables.INTERNATIONAL_FOOTBALL_COMPETITIONS_SELECTOR)
     return await get_articles(category_urls)
 
 @router.get("/api/sports/greek/football/teams/articles")
@@ -61,7 +61,7 @@ async def fetch_greek_football_teams_articles():
     Returns the articles of all available greek football
     teams in sport24.gr
     """
-    category_urls = scraper.get_category_urls(variables.GREEK_TEAMS_SELECTOR)
+    category_urls = scraper.get_category_urls(variables.GREEK_FOOTBALL_TEAMS_SELECTOR)
     return await get_articles(category_urls)
 
 @router.get("/api/sports/international/football/teams/articles")
@@ -70,5 +70,14 @@ async def fetch_international_football_teams_articles():
     Returns the articles of all available international football
     teams in sport24.gr
     """
-    category_urls = scraper.get_category_urls(variables.INTERNATIONAL_TEAMS_SELECTOR)
+    category_urls = scraper.get_category_urls(variables.INTERNATIONAL_FOOTBALL_TEAMS_SELECTOR)
+    return await get_articles(category_urls)
+
+@router.get("/api/sports/greek/basketball/teams/articles")
+async def fetch_greek_basketball_teams_articles():
+    """
+    Returns the articles of all available international football
+    teams in sport24.gr
+    """
+    category_urls = scraper.get_category_urls(variables.GREEK_BASKETBALL_TEAMS_SELECTOR)
     return await get_articles(category_urls)
