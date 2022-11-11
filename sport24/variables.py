@@ -8,7 +8,7 @@ DATE_FORMAT = '%d.%m.%Y'
 
 # // FOOTBALL
 GREEK_FOOTBALL_SELECTOR = '.main-menu__side-panel-container > :nth-child(3) > div > :first-child [itemprop="url"]'
-INTERNATIONAL_FOOTBALL_COMPETITIONS_SELECTOR = '.main-menu__side-panel-container > :nth-child(3) > div > :nth-child(2) [itemprop="url"]'
+INTERNATIONAL_FOOTBALL_SELECTOR = '.main-menu__side-panel-container > :nth-child(3) > div > :nth-child(2) [itemprop="url"]'
 GREEK_FOOTBALL_TEAMS_SELECTOR = '[class*="teams_football_greece"] [itemprop="url"]'
 INTERNATIONAL_FOOTBALL_TEAMS_SELECTOR = '[class*="teams_football_international"] [itemprop="url"]'
 

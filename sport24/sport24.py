@@ -52,7 +52,7 @@ async def fetch_international_football_articles():
     Returns the articles from football > International > <category>
     navbar menu
     """
-    category_urls = scraper.get_category_urls(variables.INTERNATIONAL_FOOTBALL_COMPETITIONS_SELECTOR)
+    category_urls = scraper.get_category_urls(variables.INTERNATIONAL_FOOTBALL_SELECTOR)
     return await get_articles(category_urls)
 
 @router.get("/api/greek-football-teams-articles")
