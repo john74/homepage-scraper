@@ -90,3 +90,12 @@ async def fetch_euroleague_articles():
     """
     category_urls = scraper.get_category_urls(variables.EUROLEAGUE_TEAMS_SELECTOR)
     return await get_articles(category_urls)
+
+@router.get("/api/nba-articles")
+async def fetch_nba_articles():
+    """
+    Returns the articles of all available international football
+    teams in sport24.gr
+    """
+    category_urls = scraper.get_category_urls(variables.NBA_TEAMS_SELECTOR)
+    return await get_articles(category_urls)
