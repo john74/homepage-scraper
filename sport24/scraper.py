@@ -12,21 +12,20 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_category_names(selector):
+def get_category_urls(selector):
     driver.get(variables.BASE_URL)
     elements = driver.find_elements(By.CSS_SELECTOR, selector)
-    names = []
+    urls = []
     for element in elements:
         href = element.get_attribute('href')
-        name = href.split('/')[-1]
-        names.append(name.strip())
-    return names
+        urls.append(href)
+    return urls
 
-def get_article(uri):
-    driver.get(f'{variables.BASE_URL}{uri}')
+def get_article(category_url):
+    driver.get(category_url)
     anchor_element = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_URL_SELECTOR)
-    url = anchor_element.get_attribute('href').strip()
-    driver.get(url)
+    article_url = anchor_element.get_attribute('href').strip()
+    driver.get(article_url)
 
     try:
         content = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_CONTENT_SELECTOR)
