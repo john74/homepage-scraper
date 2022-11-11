@@ -57,7 +57,8 @@ def get_article(category_url):
     article_body = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
     for tag in article_body:
         text = tag.text
-        if len(text):
+        text_has_more_than_ten_words = len(text.split(' ')) > 10
+        if text_has_more_than_ten_words:
             body.append(text.strip())
 
     if len(body) < 1:
