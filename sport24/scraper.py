@@ -1,4 +1,5 @@
 import os, re
+from datetime import datetime, date
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -69,4 +70,36 @@ def get_article(category_url):
         "body": body
     }
 
+async def get_articles(category_urls):
+    """
+    Returns a list of articles. An article is accepted
+    if it is unique, not older than a week and the title
+    doesn't contain a substring from rejected_titles_substrings
+    """
+    articles = []
+    titles = []
+    rejected_titles_substrings = [
+        ": Η βαθμολογία ", "Αθλητικές μεταδόσεις:"
+    ]
+
+    today = datetime.strptime(date.today().strftime(variables.DATE_FORMAT), variables.DATE_FORMAT)
+    for url in category_urls:
+        article = get_article(url)
+        if article is None:
+            continue
+        title = article['title']
+        is_unique = title not in titles
+        days_since_post = (today - datetime.strptime(article['date'], variables.DATE_FORMAT)).days
+        is_recent = days_since_post <= 7
+
+        title_is_accepted = True
+        for substring in rejected_titles_substrings:
+            if substring.lower() in title.lower():
+                title_is_accepted = False
+                break
+
+        if is_unique and is_recent and title_is_accepted:
+            titles.append(title)
+            articles.append(article)
+    return articles
 # driver.quit()
