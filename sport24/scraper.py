@@ -6,7 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
-from . import variables
+from . variables import WEBSITE, ARTICLE
+
 
 service = Service(f'{os.getcwd()}/chromedriver')
 option = webdriver.ChromeOptions()
@@ -18,7 +19,7 @@ def get_category_urls(css_selector):
     Returns a list of urls for each category in sport24.gr navbar
     as specified by the css_selector parameter.
     """
-    driver.get(variables.BASE_URL)
+    driver.get(WEBSITE['url'])
     elements = driver.find_elements(By.CSS_SELECTOR, css_selector)
     urls = []
     for element in elements:
@@ -32,32 +33,35 @@ def get_article(category_url):
     specified by the category_url parameter.
     """
     driver.get(category_url)
-    anchor_element = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_URL_SELECTOR)
+    anchor_element = driver.find_element(By.CSS_SELECTOR, ARTICLE['url'])
     article_url = anchor_element.get_attribute('href').strip()
     driver.get(article_url)
 
     try:
-        content = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_CONTENT_SELECTOR)
+        content = driver.find_element(By.CSS_SELECTOR, ARTICLE['content'])
     except Exception:
         return
 
-    author = content.find_element(By.CSS_SELECTOR, variables.AUTHOR_SELECTOR).text
-    datetime = content.find_element(By.CSS_SELECTOR, variables.DATE_SELECTOR).text.split(' ')
+    author = content.find_element(By.CSS_SELECTOR, ARTICLE['author']).text
+    datetime = content.find_element(By.CSS_SELECTOR, ARTICLE['datetime']).text.split(' ')
     date = datetime[0]
     time = datetime[-1]
-    image_element = content.find_element(By.CSS_SELECTOR, variables.IMAGE_SELECTOR)
+    image_element = content.find_element(By.CSS_SELECTOR, ARTICLE['image'])
     images = re.findall('(https?.+\\.+\\w+)', image_element.get_attribute('srcset'))
     small_image = images[0]
     medium_image = images[1]
     large_image = images[3]
-    title = content.find_element(By.CSS_SELECTOR, variables.TITLE_SELECTOR).text
+    title = content.find_element(By.CSS_SELECTOR, ARTICLE['title']).text
 
     body = []
-    article_body = content.find_elements(By.CSS_SELECTOR, variables.BODY_SELECTOR)
+    article_body = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
     for tag in article_body:
         text = tag.text
         if len(text):
             body.append(text.strip())
+
+    if len(body) < 1:
+        return
 
     return {
         "author": author.strip(),
@@ -82,14 +86,14 @@ async def get_articles(category_urls):
         ": Η βαθμολογία ", "Αθλητικές μεταδόσεις:"
     ]
 
-    today = datetime.strptime(date.today().strftime(variables.DATE_FORMAT), variables.DATE_FORMAT)
+    today = datetime.strptime(date.today().strftime(WEBSITE['date_format']), WEBSITE['date_format'])
     for url in category_urls:
         article = get_article(url)
         if article is None:
             continue
         title = article['title']
         is_unique = title not in titles
-        days_since_post = (today - datetime.strptime(article['date'], variables.DATE_FORMAT)).days
+        days_since_post = (today - datetime.strptime(article['date'], WEBSITE['date_format'])).days
         is_recent = days_since_post <= 7
 
         title_is_accepted = True
