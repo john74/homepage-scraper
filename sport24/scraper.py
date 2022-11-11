@@ -12,9 +12,13 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_category_urls(selector):
+def get_category_urls(css_selector):
+    """
+    Returns a list of urls for each category in sport24.gr navbar
+    as specified by the css_selector parameter.
+    """
     driver.get(variables.BASE_URL)
-    elements = driver.find_elements(By.CSS_SELECTOR, selector)
+    elements = driver.find_elements(By.CSS_SELECTOR, css_selector)
     urls = []
     for element in elements:
         href = element.get_attribute('href')
@@ -22,6 +26,10 @@ def get_category_urls(selector):
     return urls
 
 def get_article(category_url):
+    """
+    Returns the content of the first article for the category
+    specified by the category_url parameter.
+    """
     driver.get(category_url)
     anchor_element = driver.find_element(By.CSS_SELECTOR, variables.ARTICLE_URL_SELECTOR)
     article_url = anchor_element.get_attribute('href').strip()
