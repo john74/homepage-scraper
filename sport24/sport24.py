@@ -37,8 +37,8 @@ async def get_articles(category_urls):
             articles.append(article)
     return articles
 
-@router.get("/api/sports/greek/football/competitions/articles")
-async def fetch_greek_football_competitions_articles():
+@router.get("/api/greek-football-articles")
+async def fetch_greek_football_articles():
     """
     Returns the articles of all available greek football
     competitions in sport24.gr
@@ -46,8 +46,8 @@ async def fetch_greek_football_competitions_articles():
     category_urls = scraper.get_category_urls(variables.GREEK_FOOTBALL_COMPETITIONS_SELECTOR)
     return await get_articles(category_urls)
 
-@router.get("/api/sports/international/football/competitions/articles")
-async def fetch_international_football_competitions_articles():
+@router.get("/api/international-football-articles")
+async def fetch_international_football_articles():
     """
     Returns the articles of all available international football
     competitions in sport24.gr
@@ -55,7 +55,7 @@ async def fetch_international_football_competitions_articles():
     category_urls = scraper.get_category_urls(variables.INTERNATIONAL_FOOTBALL_COMPETITIONS_SELECTOR)
     return await get_articles(category_urls)
 
-@router.get("/api/sports/greek/football/teams/articles")
+@router.get("/api/greek-football-teams-articles")
 async def fetch_greek_football_teams_articles():
     """
     Returns the articles of all available greek football
@@ -64,7 +64,7 @@ async def fetch_greek_football_teams_articles():
     category_urls = scraper.get_category_urls(variables.GREEK_FOOTBALL_TEAMS_SELECTOR)
     return await get_articles(category_urls)
 
-@router.get("/api/sports/international/football/teams/articles")
+@router.get("/api/international-football-teams-articles")
 async def fetch_international_football_teams_articles():
     """
     Returns the articles of all available international football
@@ -73,7 +73,7 @@ async def fetch_international_football_teams_articles():
     category_urls = scraper.get_category_urls(variables.INTERNATIONAL_FOOTBALL_TEAMS_SELECTOR)
     return await get_articles(category_urls)
 
-@router.get("/api/sports/greek/basketball/teams/articles")
+@router.get("/api/greek-basketball-teams-articles")
 async def fetch_greek_basketball_teams_articles():
     """
     Returns the articles of all available international football
