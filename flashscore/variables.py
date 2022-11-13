@@ -2,7 +2,6 @@
 The urls and the selectors for all operations in sport24 website
 """
 FOOTBALL_LEAGUES = {
-    # // FOOTBALL
     'austria': ['bundesliga'],
     'belgium': ['jupiler-pro-league'],
     'czech-republic': ['1-liga'],
