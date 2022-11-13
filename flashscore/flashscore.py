@@ -1,14 +1,17 @@
 from fastapi import APIRouter
 
 from . import scraper
-from . variables import QUERY_PARAMETERS
+
 router = APIRouter()
 
 @router.get("/api/sport-standings/")
-async def get_sport_standings(sport, country, league):
+def get_sport_standings(sport='football', country='england', league='premier-league'):
     """
     docstring
     """
-    pass
-    # category_urls = scraper.get_category_urls(QUERY_PARAMETERS[category])
-    # return await scraper.get_articles(category_urls)
+    # if sport.lower() == 'basketball':
+    #     league = FOOTBALL_LEAGUES[country]
+    # else:
+    #     league = BASKETBALL_LEAGUES[country]
+    league_table = scraper.get_league_table(sport, country, league)
+    return scraper.get_standings(league_table)
