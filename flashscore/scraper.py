@@ -14,23 +14,26 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_category_urls():
+def get_league_table(sport, country, league):
+    driver.get(f'https://www.flashscore.com/{sport}/{country}/{league}/standings/')
+    return driver.find_elements(By.CSS_SELECTOR, '.ui-table__body > div')
+
+def get_team_standings(team):
+    pass
+def get_standings(league_table):
     """
     docstring
     """
-    # driver.get(f'https://www.flashscore.com/{sport}/{country}/{LEAGUE[country]}/standings/')
-    driver.get('https://www.flashscore.com/football/germany/bundesliga/standings/')
-    standings = driver.find_elements(By.CSS_SELECTOR, '.ui-table__body > div')
 
-    data = []
-    for index, standing in enumerate(standings):
+    team_standings = []
+    for index, standing in enumerate(league_table):
         rank = index + 1
         team = standing.find_element(By.CSS_SELECTOR, '.tableCellParticipant__name').text
         promotion_or_relegation = standing.find_element(By.CSS_SELECTOR, '.tableCellRank').get_attribute('title')
-        matches_played = standing.find_element(By.CSS_SELECTOR, ':nth-child(4)').text
-        wins = standing.find_element(By.CSS_SELECTOR, ':nth-child(5)').text
-        draws = standing.find_element(By.CSS_SELECTOR, ':nth-child(6)').text
-        losses = standing.find_element(By.CSS_SELECTOR, ':nth-child(7)').text
+        matches_played = standing.find_element(By.CSS_SELECTOR, ':nth-child(3)').text
+        wins = standing.find_element(By.CSS_SELECTOR, ':nth-child(4)').text
+        draws = standing.find_element(By.CSS_SELECTOR, ':nth-child(5)').text
+        losses = standing.find_element(By.CSS_SELECTOR, ':nth-child(6)').text
         points = standing.find_element(By.CSS_SELECTOR, '.table__cell--points').text
         next_match_data = standing.find_element(By.CSS_SELECTOR, '.table__cell--form > :first-child').get_attribute('title').split('\n')
         next_match_opponents = next_match_data[1]
@@ -51,7 +54,7 @@ def get_category_urls():
                 previous_match_indicator.strip()
             ])
 
-        data.append({
+        team_standings.append({
             "rank": rank,
             "team": team.strip(),
             'promotion_or_relegation': promotion_or_relegation.strip(),
@@ -64,6 +67,6 @@ def get_category_urls():
             'next_match_date': next_match_date.strip(),
             'previous_results': previous_results
         })
-    print(data)
-    return data
-get_category_urls()
+
+    return team_standings
+# get_category_urls()
