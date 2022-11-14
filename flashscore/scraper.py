@@ -17,7 +17,7 @@ def get_league_table(sport, country, league):
     docstring
     """
     driver.get(f'{WEBSITE["url"]}/{sport}/{country}/{league}/{WEBSITE["standings"]}/')
-    return driver.find_elements(By.CSS_SELECTOR, '.ui-table__body > div')
+    return driver.find_elements(By.CSS_SELECTOR, WEBSITE['league_table'])
 
 
 def get_league_standings(league_table):
