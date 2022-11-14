@@ -36,6 +36,7 @@ FOOTBALL_LEAGUES = {
 WEBSITE = {
     'url': 'https://www.flashscore.com',
     'standings': 'standings',
+    'league_table': '.ui-table__body > div',
     'date_format': '%d.%m.%Y'
 }
 
