@@ -34,16 +34,19 @@ FOOTBALL_LEAGUES = {
 }
 
 WEBSITE = {
-    'url': 'https://www.flashscore.com/',
+    'url': 'https://www.flashscore.com',
+    'standings': 'standings',
     'date_format': '%d.%m.%Y'
 }
 
-ARTICLE = {
-    'url': '.article__title a',
-    'title': '.article-single__title',
-    'content': '#article-container',
-    'author': '.article-single__byline span',
-    'datetime': '.article-single__byline > time',
-    'image': 'figure > img',
-    'body': '.article-single__body > p'
+TEAM = {
+    'name': '.tableCellParticipant__name',
+    'status': '.tableCellRank',
+    'matches_played': ':nth-child(3)',
+    'wins': ':nth-child(4)',
+    'draws': ':nth-child(5)',
+    'losses': ':nth-child(6)',
+    'points': '.table__cell--points',
+    'next_match_data': '.table__cell--form > :first-child',
+    'last_five_results': '.table__cell--form > :not(:first-child)'
 }
