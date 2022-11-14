@@ -42,7 +42,6 @@ WEBSITE = {
 TEAM = {
     'name': '.tableCellParticipant__name',
     'status': '.tableCellRank',
-    'matches_played': ':nth-child(3)',
     'wins': ':nth-child(4)',
     'draws': ':nth-child(5)',
     'losses': ':nth-child(6)',
