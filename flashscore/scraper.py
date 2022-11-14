@@ -12,11 +12,11 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_league_table(sport, country, league):
+def get_football_league_table(country, league):
     """
     docstring
     """
-    driver.get(f'{WEBSITE["url"]}/{sport}/{country}/{league}/{WEBSITE["standings"]}/')
+    driver.get(f'{WEBSITE["url"]}/football/{country}/{league}/{WEBSITE["standings"]}/')
     return driver.find_elements(By.CSS_SELECTOR, WEBSITE['league_table'])
 
 
