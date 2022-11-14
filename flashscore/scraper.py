@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
+from . variables import WEBSITE, TEAM
 
 service = Service(f'{os.getcwd()}/chromedriver')
 option = webdriver.ChromeOptions()
@@ -13,30 +14,29 @@ option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
 def get_league_table(sport, country, league):
-    driver.get(f'https://www.flashscore.com/{sport}/{country}/{league}/standings/')
+    driver.get(f'{WEBSITE["url"]}/{sport}/{country}/{league}/{WEBSITE["standings"]}/')
     return driver.find_elements(By.CSS_SELECTOR, '.ui-table__body > div')
 
-def get_team_standings(team):
-    pass
-def get_standings(league_table):
+
+def get_league_standings(league_table):
     """
     docstring
     """
 
-    team_standings = []
-    for index, standing in enumerate(league_table):
-        rank = index + 1
-        team = standing.find_element(By.CSS_SELECTOR, '.tableCellParticipant__name').text
-        promotion_or_relegation = standing.find_element(By.CSS_SELECTOR, '.tableCellRank').get_attribute('title')
-        matches_played = standing.find_element(By.CSS_SELECTOR, ':nth-child(3)').text
-        wins = standing.find_element(By.CSS_SELECTOR, ':nth-child(4)').text
-        draws = standing.find_element(By.CSS_SELECTOR, ':nth-child(5)').text
-        losses = standing.find_element(By.CSS_SELECTOR, ':nth-child(6)').text
-        points = standing.find_element(By.CSS_SELECTOR, '.table__cell--points').text
-        next_match_data = standing.find_element(By.CSS_SELECTOR, '.table__cell--form > :first-child').get_attribute('title').split('\n')
+    league_standings = []
+    for index, team in enumerate(league_table, start=1):
+        rank = index
+        name = team.find_element(By.CSS_SELECTOR, TEAM['name']).text
+        status = team.find_element(By.CSS_SELECTOR, TEAM['status']).get_attribute('title')
+        matches_played = team.find_element(By.CSS_SELECTOR, TEAM['matches_played']).text
+        wins = team.find_element(By.CSS_SELECTOR, TEAM['wins']).text
+        draws = team.find_element(By.CSS_SELECTOR, TEAM['draws']).text
+        losses = team.find_element(By.CSS_SELECTOR, TEAM['losses']).text
+        points = team.find_element(By.CSS_SELECTOR, TEAM['points']).text
+        next_match_data = team.find_element(By.CSS_SELECTOR, TEAM['next_match_data']).get_attribute('title').split('\n')
         next_match_opponents = next_match_data[1]
         next_match_date = next_match_data[-1]
-        last_five_results = standing.find_elements(By.CSS_SELECTOR, '.table__cell--form > :not(:first-child)')
+        last_five_results = team.find_elements(By.CSS_SELECTOR, TEAM['last_five_results'])
 
         previous_results = []
         for result in last_five_results:
@@ -52,10 +52,10 @@ def get_standings(league_table):
                 previous_match_indicator.strip()
             ])
 
-        team_standings.append({
+        league_standings.append({
             "rank": rank,
-            "team": team.strip(),
-            'promotion_or_relegation': promotion_or_relegation.strip(),
+            "name": name.strip(),
+            'status': status.strip(),
             'matches_played': matches_played.strip(),
             'wins': wins.strip(),
             'draws': draws.strip(),
@@ -66,5 +66,4 @@ def get_standings(league_table):
             'previous_results': previous_results
         })
 
-    return team_standings
-# get_category_urls()
+    return league_standings
