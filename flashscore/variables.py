@@ -48,5 +48,5 @@ TEAM = {
     'losses': ':nth-child(6)',
     'points': '.table__cell--points',
     'next_match_data': '.table__cell--form > :first-child',
-    'last_five_results': '.table__cell--form > :not(:first-child)'
+    'recent_results': '.table__cell--form > :not(:first-child)'
 }
