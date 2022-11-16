@@ -19,57 +19,52 @@ def get_football_league_table(country, league):
     driver.get(f'{WEBSITE["url"]}/football/{country}/{league}/{WEBSITE["standings"]}/')
     return driver.find_elements(By.CSS_SELECTOR, WEBSITE['league_table'])
 
+def get_team_standings(index, team):
+    wins = team.find_element(By.CSS_SELECTOR, TEAM['wins']).text
+    draws = team.find_element(By.CSS_SELECTOR, TEAM['draws']).text
+    losses = team.find_element(By.CSS_SELECTOR, TEAM['losses']).text
+    next_match_data = team.find_element(By.CSS_SELECTOR, TEAM['next_match_data'])
+    next_match_data_list = next_match_data.get_attribute('title').split('\n')
+    next_match_opponents_list = next_match_data_list[1].split(' - ')
+
+    return {
+        "rank": index,
+        "name": team.find_element(By.CSS_SELECTOR, TEAM['name']).text,
+        "status": team.find_element(By.CSS_SELECTOR, TEAM['status']).get_attribute('title'),
+        "wins": wins,
+        "draws": draws,
+        "losses": losses,
+        "matches_played": int(wins) + int(draws) + int(losses),
+        "points": team.find_element(By.CSS_SELECTOR, TEAM['points']).text,
+        "next_match_home_team": next_match_opponents_list[0],
+        "next_match_away_team": next_match_opponents_list[-1],
+        "next_match_date": next_match_data_list[-1]
+    }
+
+def get_recent_results(team):
+    recent_results = team.find_elements(By.CSS_SELECTOR, TEAM['recent_results'])
+    results = []
+    for result in recent_results:
+        data = result.get_attribute('title')
+        score = re.findall('(\\d+:\\d+)&', data)[0]
+        match_opponents = re.findall('\\((\\w+.+)\\)', data)[0]
+        match_date = re.findall('(\\d+\\..+)$', data)[0]
+        result_letter_indicator = result.text
+        results.append([
+            score.strip(),
+            match_opponents.strip(),
+            match_date.strip(),
+            result_letter_indicator.strip()
+        ])
+    return results
 
 def get_league_standings(league_table):
     """
     docstring
     """
-
     league_standings = []
     for index, team in enumerate(league_table, start=1):
-        rank = index
-        name = team.find_element(By.CSS_SELECTOR, TEAM['name']).text
-        status = team.find_element(By.CSS_SELECTOR, TEAM['status']).get_attribute('title')
-        wins = team.find_element(By.CSS_SELECTOR, TEAM['wins']).text
-        draws = team.find_element(By.CSS_SELECTOR, TEAM['draws']).text
-        losses = team.find_element(By.CSS_SELECTOR, TEAM['losses']).text
-        matches_played = int(wins) + int(draws) + int(losses)
-        points = team.find_element(By.CSS_SELECTOR, TEAM['points']).text
-        next_match_data = team.find_element(By.CSS_SELECTOR, TEAM['next_match_data'])
-        next_match_data_list = next_match_data.get_attribute('title').split('\n')
-        next_match_opponents_list = next_match_data_list[1].split(' - ')
-        next_match_home_team = next_match_opponents_list[0]
-        next_match_away_team = next_match_opponents_list[-1]
-        next_match_date = next_match_data_list[-1]
-        last_five_results = team.find_elements(By.CSS_SELECTOR, TEAM['last_five_results'])
-
-        previous_results = []
-        for result in last_five_results:
-            result_data = result.get_attribute('title')
-            previous_match_score = re.findall('(\\d+:\\d+)&', result_data)[0]
-            previous_match_opponents = re.findall('\\((\\w+.+)\\)', result_data)[0]
-            previous_match_date = re.findall('(\\d+\\..+)$', result_data)[0]
-            previous_match_indicator = result.text
-            previous_results.append([
-                previous_match_score.strip(),
-                previous_match_opponents.strip(),
-                previous_match_date.strip(),
-                previous_match_indicator.strip()
-            ])
-
-        league_standings.append({
-            "rank": rank,
-            "name": name.strip(),
-            'status': status.strip(),
-            'matches_played': str(matches_played).strip(),
-            'wins': wins.strip(),
-            'draws': draws.strip(),
-            'losses': losses.strip(),
-            'points': points.strip(),
-            'next_match_home_team': next_match_home_team.strip(),
-            'next_match_away_team': next_match_away_team.strip(),
-            'next_match_date': next_match_date.strip(),
-            'previous_results': previous_results
-        })
-
+        team_standings = get_team_standings(index, team)
+        team_standings['recent_results'] = get_recent_results(team)
+        league_standings.append(team_standings)
     return league_standings
