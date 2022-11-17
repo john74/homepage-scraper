@@ -18,7 +18,12 @@ def get_football_league_tables(country, league):
     Returns all the available tables of the league
     """
     driver.get(f'{WEBSITE["football_url"]}/{country}/{league}')
-    league_season = driver.find_element(By.CSS_SELECTOR, WEBSITE['league_season']).text
+
+    try:
+        league_season = driver.find_element(By.CSS_SELECTOR, WEBSITE['league_season']).text
+    except Exception:
+        return
+
     league_season_year = int(league_season.split('/')[0])
     current_year = int(date.today().strftime('%Y'))
     table_is_updated = (current_year == league_season_year) or \
