@@ -80,9 +80,13 @@ def get_league_standings(league_tables):
     if league_tables is None:
         return
     league_standings = []
-    for rank, team in enumerate(league_tables, start=1):
-        team_standings = get_team_standings(team)
-        team_standings['rank'] = rank
-        team_standings['recent_results'] = get_recent_results(team)
-        league_standings.append(team_standings)
+    for group, table in enumerate(league_tables):
+        table_standings = []
+        teams = table.find_elements(By.CSS_SELECTOR, WEBSITE['league_teams'])
+        for rank, team in enumerate(teams, start=1):
+            team_standings = get_team_standings(team)
+            team_standings['rank'] = rank
+            team_standings['recent_results'] = get_recent_results(team)
+            table_standings.append(team_standings)
+        league_standings.append({group:table_standings})
     return league_standings
