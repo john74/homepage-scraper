@@ -26,11 +26,6 @@ FOOTBALL_LEAGUES = {
     'switzerland': ['super-league'],
     'turkey': ['super-lig'],
     'ukraine': ['premier-league'],
-
-    # // BASKETBALL
-    'greek_basketball_teams': '[class*="teams_basketball_greece"] a',
-    'euroleague_teams': '[class*="teams_basketball_euroleague"] a',
-    'nba_teams': '[class*="teams_basketball_nba"] a'
 }
 
 WEBSITE = {
@@ -48,5 +43,8 @@ TEAM = {
     'losses': ':nth-child(6)',
     'points': '.table__cell--points',
     'next_match_data': '.table__cell--form > :first-child',
-    'recent_results': '.table__cell--form > :not(:first-child)'
+    'recent_results': '.table__cell--form > :not(:first-child)',
+    'match_score': '(\\d+:\\d+)&',
+    'match_opponents': '\\((\\w+.+)\\)',
+    'match_date': '(\\d+\\..+)$'
 }
