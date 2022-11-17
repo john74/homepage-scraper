@@ -15,8 +15,7 @@ driver = webdriver.Chrome(service=service, options=option)
 
 def get_football_league_tables(country, league):
     """
-    Returns the table with the standings for all the football teams
-    of the league
+    Returns all the available tables of the league
     """
     driver.get(f'{WEBSITE["football_url"]}/{country}/{league}')
     league_season = driver.find_element(By.CSS_SELECTOR, WEBSITE['league_season']).text
@@ -31,7 +30,7 @@ def get_football_league_tables(country, league):
 
 def get_team_standings(team):
     """
-    Returns the standings for of a team
+    Returns all the available info about a team in the league table
     """
     wins = team.find_element(By.CSS_SELECTOR, TEAM['wins']).text
     draws = team.find_element(By.CSS_SELECTOR, TEAM['draws']).text
@@ -46,7 +45,7 @@ def get_team_standings(team):
         "wins": wins,
         "draws": draws,
         "losses": losses,
-        "matches_played": int(wins) + int(draws) + int(losses),
+        "matches_played": str(int(wins) + int(draws) + int(losses)),
         "points": team.find_element(By.CSS_SELECTOR, TEAM['points']).text,
         "next_match_home_team": next_match_opponents_list[0],
         "next_match_away_team": next_match_opponents_list[-1],
@@ -75,7 +74,8 @@ def get_recent_results(team):
 
 def get_league_standings(league_tables):
     """
-    Returns the standings of all the teams of the league table
+    Returns the standings of all the teams of all
+    the league tables
     """
     if league_tables is None:
         return
