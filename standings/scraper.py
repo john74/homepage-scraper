@@ -1,4 +1,5 @@
 import os, re
+from datetime import date
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -12,13 +13,21 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_football_league_table(country, league):
+def get_football_league_tables(country, league):
     """
     Returns the table with the standings for all the football teams
     of the league
     """
-    driver.get(f'{WEBSITE["url"]}/football/{country}/{league}/{WEBSITE["standings"]}/')
-    return driver.find_elements(By.CSS_SELECTOR, WEBSITE['league_table'])
+    driver.get(f'{WEBSITE["football_url"]}/{country}/{league}')
+    league_season = driver.find_element(By.CSS_SELECTOR, WEBSITE['league_season']).text
+    league_season_year = int(league_season.split('/')[0])
+    current_year = int(date.today().strftime('%Y'))
+    table_is_updated = (current_year == league_season_year) or \
+                       (current_year + 1 == league_season_year)
+
+    if table_is_updated:
+        return driver.find_elements(By.CSS_SELECTOR, WEBSITE['league_tables'])
+    return
 
 def get_team_standings(team):
     """
@@ -64,12 +73,14 @@ def get_recent_results(team):
         ])
     return results
 
-def get_league_standings(league_table):
+def get_league_standings(league_tables):
     """
     Returns the standings of all the teams of the league table
     """
+    if league_tables is None:
+        return
     league_standings = []
-    for rank, team in enumerate(league_table, start=1):
+    for rank, team in enumerate(league_tables, start=1):
         team_standings = get_team_standings(team)
         team_standings['rank'] = rank
         team_standings['recent_results'] = get_recent_results(team)
