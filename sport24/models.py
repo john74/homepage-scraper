@@ -6,6 +6,8 @@ class Article(Base):
     __tablename__ = 'articles'
 
     id = Column(Integer, primary_key=True, index=True)
+    website = Column(String)
+    category = Column(String)
     url = Column(String)
     author = Column(String)
     date = Column(String)
