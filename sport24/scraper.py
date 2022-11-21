@@ -66,6 +66,7 @@ def get_article(category_url):
 
     return {
         "website": "sport24.gr",
+        "category": category_url.split('/')[-1],
         "url": article_url,
         "author": author.strip(),
         "date": post_date.strip(),
@@ -84,7 +85,8 @@ async def get_articles(category_urls):
     doesn't contain a substring from rejected_titles_substrings
     """
 
-    articles = {}
+    # articles = {}
+    articles = []
     titles = []
     rejected_titles_substrings = [
         ": Η βαθμολογία ", "Αθλητικές μεταδόσεις:"
@@ -108,7 +110,8 @@ async def get_articles(category_urls):
 
         if is_unique and is_recent and title_is_accepted:
             titles.append(title)
-            article_category = url.split('/')[-1]
-            articles[article_category] = article
+            articles.append(article)
+            # article_category = url.split('/')[-1]
+            # articles[article_category] = article
 
     return articles
