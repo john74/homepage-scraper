@@ -17,7 +17,7 @@ def get_db():
         db.close()
 
 
-async def get_sport24_articles(category):
+async def get_articles(category):
     """
     Returns the articles from all football and basketball
     navbar categories
@@ -33,16 +33,18 @@ async def store_articles(categories, db: Session = Depends(get_db)):
     Returns the articles from all football and basketball
     navbar categories
     """
-    articles = await get_sport24_articles(categories)
-    for article_category, article in articles.items():
+    articles = await get_articles(categories)
+    for article in articles:
         existing_article = db.query(models.Article).filter(
-            models.Article.category == article_category,
+            models.Article.general_category == categories,
+            models.Article.category == article['category'],
             models.Article.website == article['website']
         ).scalar()
 
         if existing_article:
             existing_article.website = article['website']
-            existing_article.category = article_category
+            existing_article.category = article['category']
+            existing_article.general_category = categories
             existing_article.url = article['url']
             existing_article.author = article['author']
             existing_article.date = article['date']
@@ -53,12 +55,13 @@ async def store_articles(categories, db: Session = Depends(get_db)):
             existing_article.title = article['title']
             existing_article.body = article['body']
         else:
+            article['general_category'] = categories
             new_article = models.Article(**article)
             db.add(new_article)
 
         db.commit()
 
 @router.get("/api/sport24-articles")
-def get(db: Session = Depends(get_db)):
-    a = db.query(models.Article).all()
-    return a
+def get_articles_by_category(category, db: Session = Depends(get_db)):
+    articles = db.query(models.Article).filter(models.Article.general_category == category).all()
+    return articles
