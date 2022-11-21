@@ -1,19 +1,10 @@
 import re
 from driver import driver
 from datetime import datetime, date
-# from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-
-# from selenium.webdriver.chrome.options import Options
 
 from .variables import WEBSITE, ARTICLE
 
-
-# service = Service(f'{os.getcwd()}/chromedriver')
-# option = webdriver.ChromeOptions()
-# option.add_argument('headless')
-# driver = webdriver.Chrome(service=service, options=option)
 
 def get_category_urls(category_anchor_elements):
     """
@@ -27,6 +18,7 @@ def get_category_urls(category_anchor_elements):
         href = anchor.get_attribute('href')
         urls.append(href.strip())
     return urls
+
 
 def get_article(category_url):
     """
@@ -79,6 +71,7 @@ def get_article(category_url):
         "body": body
     }
 
+
 async def get_articles(category_urls):
     """
     Returns a list of articles. An article is accepted
@@ -111,7 +104,5 @@ async def get_articles(category_urls):
         if is_unique and is_recent and title_is_accepted:
             titles.append(title)
             articles.append(article)
-            # article_category = url.split('/')[-1]
-            # articles[article_category] = article
 
     return articles
