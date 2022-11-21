@@ -1,17 +1,19 @@
-import os, re
+import re
+from driver import driver
 from datetime import datetime, date
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
+# from selenium import webdriver
+# from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+
+# from selenium.webdriver.chrome.options import Options
 
 from .variables import WEBSITE, ARTICLE
 
 
-service = Service(f'{os.getcwd()}/chromedriver')
-option = webdriver.ChromeOptions()
-option.add_argument('headless')
-driver = webdriver.Chrome(service=service, options=option)
+# service = Service(f'{os.getcwd()}/chromedriver')
+# option = webdriver.ChromeOptions()
+# option.add_argument('headless')
+# driver = webdriver.Chrome(service=service, options=option)
 
 def get_category_urls(category_anchor_elements):
     """
@@ -84,7 +86,6 @@ async def get_articles(category_urls):
     doesn't contain a substring from rejected_titles_substrings
     """
 
-    # articles = {}
     articles = []
     titles = []
     rejected_titles_substrings = [
