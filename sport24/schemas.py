@@ -3,6 +3,8 @@ from pydantic import BaseModel
 
 class ArticleBase(BaseModel):
     id: int
+    website = str
+    category = str
     url: str
     author: str
     date: str
