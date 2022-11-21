@@ -3,7 +3,6 @@ from datetime import datetime, date
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
 from .variables import WEBSITE, ARTICLE
@@ -14,16 +13,16 @@ option = webdriver.ChromeOptions()
 option.add_argument('headless')
 driver = webdriver.Chrome(service=service, options=option)
 
-def get_category_urls(css_selector):
+def get_category_urls(category_anchor_elements):
     """
     Returns a list of urls for each category in sport24.gr navbar
     as specified by the css_selector parameter.
     """
     driver.get(WEBSITE['url'])
-    elements = driver.find_elements(By.CSS_SELECTOR, css_selector)
+    anchor_elements = driver.find_elements(By.CSS_SELECTOR, category_anchor_elements)
     urls = []
-    for element in elements:
-        href = element.get_attribute('href')
+    for anchor in anchor_elements:
+        href = anchor.get_attribute('href')
         urls.append(href)
     return urls
 
