@@ -20,11 +20,12 @@ WEBSITE = {
 }
 
 ARTICLE = {
-    'url': '.article__title a',
+    'url': '.article__title > a',
     'title': '.article-single__title',
     'content': '#article-container',
     'author': '.article-single__byline span',
     'datetime': '.article-single__byline > time',
-    'image': 'figure > img',
+    'image': 'figure > [srcset]',
+    'image_list': '(http.+).+,?',
     'body': '.article-single__body > p'
 }
