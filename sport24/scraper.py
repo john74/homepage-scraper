@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
-from . variables import WEBSITE, ARTICLE
+from .variables import WEBSITE, ARTICLE
 
 
 service = Service(f'{os.getcwd()}/chromedriver')
@@ -47,24 +47,25 @@ def get_article(category_url):
     post_date = date_time[0]
     post_time = date_time[-1]
     image_element = content.find_element(By.CSS_SELECTOR, ARTICLE['image'])
-    images = re.findall('(https?.+\\.+\\w+)', image_element.get_attribute('srcset'))
-    small_image = images[0]
-    medium_image = images[1]
-    large_image = images[3]
+    images_list = re.findall(ARTICLE['image_list'], image_element.get_attribute('srcset'))
+    small_image = images_list[0].split(' ')[0]
+    medium_image = images_list[1].split(' ')[0]
+    large_image = images_list[3].split(' ')[0]
     title = content.find_element(By.CSS_SELECTOR, ARTICLE['title']).text
 
-    body = []
+    body = ''
     article_body = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
     for tag in article_body:
         text = tag.text
         text_has_more_than_ten_words = len(text.split(' ')) > 10
         if text_has_more_than_ten_words:
-            body.append(text.strip())
+            body += text.strip() + '\n'
 
-    if len(body) < 1:
+    if not body:
         return
 
     return {
+        "website": "sport24.gr",
         "url": article_url,
         "author": author.strip(),
         "date": post_date.strip(),
@@ -82,7 +83,8 @@ async def get_articles(category_urls):
     if it is unique, not older than a week and the title
     doesn't contain a substring from rejected_titles_substrings
     """
-    articles = []
+
+    articles = {}
     titles = []
     rejected_titles_substrings = [
         ": Η βαθμολογία ", "Αθλητικές μεταδόσεις:"
@@ -106,6 +108,7 @@ async def get_articles(category_urls):
 
         if is_unique and is_recent and title_is_accepted:
             titles.append(title)
-            articles.append(article)
+            article_category = url.split('/')[-1]
+            articles[article_category] = article
+
     return articles
-# driver.quit()
