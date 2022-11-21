@@ -23,7 +23,7 @@ def get_category_urls(category_anchor_elements):
     urls = []
     for anchor in anchor_elements:
         href = anchor.get_attribute('href')
-        urls.append(href)
+        urls.append(href.strip())
     return urls
 
 def get_article(category_url):
