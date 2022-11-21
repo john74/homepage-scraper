@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from .import scraper
 from .variables import QUERY_PARAMETERS
 from .import models, database
+from .models import Article
 from sqlalchemy.orm import Session
 
 router = APIRouter()
@@ -35,10 +36,10 @@ async def store_articles(categories, db: Session = Depends(get_db)):
     """
     articles = await get_articles(categories)
     for article in articles:
-        existing_article = db.query(models.Article).filter(
-            models.Article.general_category == categories,
-            models.Article.category == article['category'],
-            models.Article.website == article['website']
+        existing_article = db.query(Article).filter(
+            Article.general_category == categories,
+            Article.category == article['category'],
+            Article.website == article['website']
         ).scalar()
 
         if existing_article:
@@ -56,12 +57,12 @@ async def store_articles(categories, db: Session = Depends(get_db)):
             existing_article.body = article['body']
         else:
             article['general_category'] = categories
-            new_article = models.Article(**article)
+            new_article = Article(**article)
             db.add(new_article)
 
         db.commit()
 
 @router.get("/api/sport24-articles")
 def get_articles_by_category(category, db: Session = Depends(get_db)):
-    articles = db.query(models.Article).filter(models.Article.general_category == category).all()
+    articles = db.query(Article).filter(Article.general_category == category).all()
     return articles
