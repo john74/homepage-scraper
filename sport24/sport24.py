@@ -18,12 +18,12 @@ def get_db():
         db.close()
 
 
-async def get_articles(category):
+async def get_articles(article_category):
     """
     Returns the articles from all football and basketball
     navbar categories
     """
-    category_urls = scraper.get_category_urls(QUERY_PARAMETERS[category])
+    category_urls = scraper.get_category_urls(QUERY_PARAMETERS[article_category])
     articles = await scraper.get_articles(category_urls)
     return articles
 
