@@ -5,6 +5,7 @@ class ArticleBase(BaseModel):
     id: int
     website = str
     category = str
+    general_category = str
     url: str
     author: str
     date: str
