@@ -117,5 +117,23 @@ LOGOS = {
         "wrexham": "https://upload.wikimedia.org/wikipedia/en/3/3f/Wrexham_A.F.C._logo.png",
         "yeovil": f"{BASE_URL}/9/9b/Yeovil_Town_FC_logo.svg/800px-Yeovil_Town_FC_logo.svg.png",
         "york_city": f"{BASE_URL}/7/71/York_City_FC.svg/800px-York_City_FC.svg.png",
+        "afc_fylde": f"{BASE_URL}/a/ab/AFC_Fylde_%282014%29.svg/800px-AFC_Fylde_%282014%29.svg.png",
+        "afc_telford": "https://upload.wikimedia.org/wikipedia/en/9/9d/Telford_United.png",
+        "alfreton": f"{BASE_URL}/5/52/Alfreton_Town_FC_logo.svg/800px-Alfreton_Town_FC_logo.svg.png",
+        "banbury": "https://upload.wikimedia.org/wikipedia/en/9/9f/Banbury_United_Logo.png",
+        "blyth_spartans": "https://upload.wikimedia.org/wikipedia/en/9/9a/BlythSpartans.png",
+        "boston_utd": f"{BASE_URL}/5/53/Boston_United_FC_logo.svg/800px-Boston_United_FC_logo.svg.png",
+        "brackley_town": "https://upload.wikimedia.org/wikipedia/en/0/08/BrackleyTownFCBadge.png",
+        "bradford_pa": "https://upload.wikimedia.org/wikipedia/en/8/85/BradfordPA.PNG",
+        "buxton": "https://upload.wikimedia.org/wikipedia/en/5/55/Buxtonfc.png",
+        "chester": f"{BASE_URL}/c/cb/Chester-fc.svg/800px-Chester-fc.svg.png",
+        "chorley": "https://upload.wikimedia.org/wikipedia/en/2/2a/Chorley_fc.png",
+        "curzon_ashton": "https://upload.wikimedia.org/wikipedia/en/0/0b/Curzon_Ashton_F.C._Logo_2018.png",
+        "darlington": "https://upload.wikimedia.org/wikipedia/en/4/41/Darlington_FC_%28crest%29.png",
+        "farsley_celtic": "https://upload.wikimedia.org/wikipedia/en/d/d7/Farsley_AFC_logo.png",
+        "gloucester_city": "https://upload.wikimedia.org/wikipedia/en/6/6d/Gloucester_city_afc_logo.png",
+        "hereford": "https://upload.wikimedia.org/wikipedia/en/3/35/Hereford_F.C._logo.png",
+        "kettering_town": "https://upload.wikimedia.org/wikipedia/en/2/21/KetteringTFC.png",
+        "kidderminster_harriers": "https://upload.wikimedia.org/wikipedia/en/a/ae/Kidderminster_Harriers_F.C._logo.png"
     }
 }
