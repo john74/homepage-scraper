@@ -6,13 +6,13 @@ from selenium.webdriver.common.by import By
 from .variables import WEBSITE, ARTICLE
 
 
-def get_category_urls(category_anchor_elements):
+def get_subcategory_urls(subcategory_link_selector):
     """
     Returns a list of urls for each category in sport24.gr navbar
     as specified by the css_selector parameter.
     """
     driver.get(WEBSITE['url'])
-    anchor_elements = driver.find_elements(By.CSS_SELECTOR, category_anchor_elements)
+    anchor_elements = driver.find_elements(By.CSS_SELECTOR, subcategory_link_selector)
     urls = []
     for anchor in anchor_elements:
         href = anchor.get_attribute('href')
@@ -20,12 +20,12 @@ def get_category_urls(category_anchor_elements):
     return urls
 
 
-def get_article(category_url):
+def get_article(subcategory_url):
     """
     Returns the content of the first article for the category
     specified by the category_url parameter.
     """
-    driver.get(category_url)
+    driver.get(subcategory_url)
     anchor_element = driver.find_element(By.CSS_SELECTOR, ARTICLE['url'])
     article_url = anchor_element.get_attribute('href').strip()
     driver.get(article_url)
@@ -45,6 +45,7 @@ def get_article(category_url):
     medium_image = images_list[1].split(' ')[0]
     large_image = images_list[3].split(' ')[0]
     title = content.find_element(By.CSS_SELECTOR, ARTICLE['title']).text
+    category = subcategory_url.split('/')[-1]
 
     body = ''
     article_body = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
@@ -59,7 +60,7 @@ def get_article(category_url):
 
     return {
         "website": "sport24.gr",
-        "category": category_url.split('/')[-1],
+        "category": category.strip(),
         "url": article_url,
         "author": author.strip(),
         "date": post_date.strip(),
@@ -72,7 +73,7 @@ def get_article(category_url):
     }
 
 
-async def get_articles(category_urls):
+async def get_articles(subcategory_urls):
     """
     Returns a list of articles. An article is accepted
     if it is unique, not older than a week and the title
@@ -86,8 +87,8 @@ async def get_articles(category_urls):
     ]
 
     today = datetime.strptime(date.today().strftime(WEBSITE['date_format']), WEBSITE['date_format'])
-    for url in category_urls:
-        article = get_article(url)
+    for subcategory_url in subcategory_urls:
+        article = get_article(subcategory_url)
         if article is None:
             continue
         title = article['title']

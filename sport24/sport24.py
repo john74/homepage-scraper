@@ -18,26 +18,27 @@ def get_db():
         db.close()
 
 
-async def get_articles(article_category):
-    """
-    Returns the articles from all football and basketball
-    navbar categories
-    """
-    category_urls = scraper.get_category_urls(QUERY_PARAMETERS[article_category])
-    articles = await scraper.get_articles(category_urls)
-    return articles
+# async def get_articles(article_category):
+#     """
+#     Returns the articles from all football and basketball
+#     navbar categories
+#     """
+#     category_urls = scraper.get_category_urls(QUERY_PARAMETERS[article_category])
+#     articles = await scraper.get_articles(category_urls)
+#     return articles
 
 
 @router.post("/api/store-sport24-articles")
-async def store_articles(categories, db: Session = Depends(get_db)):
+async def store_articles(subcategory, db: Session = Depends(get_db)):
     """
     Returns the articles from all football and basketball
     navbar categories
     """
-    articles = await get_articles(categories)
+    subcategory_urls = scraper.get_subcategory_urls(QUERY_PARAMETERS[subcategory])
+    articles = await scraper.get_articles(subcategory_urls)
     for article in articles:
         existing_article = db.query(Article).filter(
-            Article.general_category == categories,
+            Article.general_category == subcategory,
             Article.category == article['category'],
             Article.website == article['website']
         ).scalar()
@@ -45,7 +46,7 @@ async def store_articles(categories, db: Session = Depends(get_db)):
         if existing_article:
             existing_article.website = article['website']
             existing_article.category = article['category']
-            existing_article.general_category = categories
+            existing_article.general_category = subcategory
             existing_article.url = article['url']
             existing_article.author = article['author']
             existing_article.date = article['date']
@@ -56,13 +57,13 @@ async def store_articles(categories, db: Session = Depends(get_db)):
             existing_article.title = article['title']
             existing_article.body = article['body']
         else:
-            article['general_category'] = categories
+            article['general_category'] = subcategory
             new_article = Article(**article)
             db.add(new_article)
 
         db.commit()
 
 @router.get("/api/sport24-articles")
-def get_articles_by_category(category, db: Session = Depends(get_db)):
-    articles = db.query(Article).filter(Article.general_category == category).all()
+def get_articles_by_category(general_category, db: Session = Depends(get_db)):
+    articles = db.query(Article).filter(Article.general_category == general_category).all()
     return articles
