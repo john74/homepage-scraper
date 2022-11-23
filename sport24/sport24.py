@@ -29,4 +29,5 @@ def get_db():
 
 @router.post("/api/store-sport24-articles")
 def store_articles(category, db: Session = Depends(get_db)):
-    category_selector = QUERY_PARAMETERS[category]
+    anchor_elements = QUERY_PARAMETERS[category]
+    category_urls = scraper.get_category_urls(anchor_elements)
