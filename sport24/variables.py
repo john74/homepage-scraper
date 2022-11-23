@@ -16,6 +16,7 @@ QUERY_PARAMETERS = {
 
 WEBSITE = {
     'url': 'https://www.sport24.gr/',
+    'name': 'sport24.gr',
     'date_format': '%d.%m.%Y'
 }
 
@@ -26,6 +27,15 @@ ARTICLE = {
     'author': '.article-single__byline span',
     'datetime': '.article-single__byline > time',
     'image': 'figure > [srcset]',
-    'image_list': '(http.+).+,?',
+    'images': r'(http.+\w+),?',
     'body': '.article-single__body > p'
 }
+
+REJECTED_TITLE_SUBSTRINGS = [
+    ": Η βαθμολογία ",
+    "Αθλητικές μεταδόσεις:"
+]
+
+REJECTED_URL_SUBSTRINGS = [
+    'longreads'
+]
