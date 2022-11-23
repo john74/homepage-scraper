@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from . import scraper
-from .variables import QUERY_PARAMETERS
+from .variables import CATEGORY_SELECTORS
 from . import models, database
 from .models import Article
 
@@ -29,5 +29,5 @@ def get_db():
 
 @router.post("/api/store-sport24-articles")
 def store_articles(category, db: Session = Depends(get_db)):
-    anchor_elements = QUERY_PARAMETERS[category]
+    anchor_elements = CATEGORY_SELECTORS[category]
     category_urls = scraper.get_category_urls(anchor_elements)

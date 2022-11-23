@@ -1,7 +1,7 @@
 """
 The urls and the selectors for all operations in sport24 website
 """
-QUERY_PARAMETERS = {
+CATEGORY_SELECTORS = {
     # // FOOTBALL
     'greek_football': 'nav > div > :nth-child(3) > div > :nth-child(1) a',
     'international_football': 'nav > div > :nth-child(3) > div > :nth-child(2) a',
