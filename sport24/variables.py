@@ -34,11 +34,7 @@ ARTICLE = {
     'body': '.article-single__body > p'
 }
 
-REJECTED_TITLE_SUBSTRINGS = [
-    ": Η βαθμολογία ",
-    "Αθλητικές μεταδόσεις:"
-]
-
 REJECTED_URL_SUBSTRINGS = [
-    'longreads'
+    'longreads', 'vathmologia', 'show-must-go-on',
+    'athlitikes-metadoseis'
 ]
