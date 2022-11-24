@@ -34,3 +34,4 @@ def store_articles(category, db: Session = Depends(get_db)):
     category_name_url_pairs = scraper.get_category_name_url_pairs(category_urls)
     recent_articles = scraper.get_recent_articles(category_name_url_pairs)
     unique_pairs = scraper.get_unique_pairs(recent_articles)
+    url_accepted_pairs = scraper.get_url_accepted_pairs(unique_pairs)
