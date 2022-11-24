@@ -48,3 +48,18 @@ def get_category_name_article_url_pairs(category_name_url_pairs):
         article_url = anchor_element.get_attribute('href')
         article_urls[name] = article_url.strip()
     return article_urls
+
+
+def get_unique_pairs(category_name_article_url_pairs):
+    """
+    Rejects the keys that have the same value with other keys
+    in the dictionary, and returns the unique pairs.
+    """
+    pairs = {}
+    urls = []
+    for category, url in category_name_article_url_pairs.items():
+        if url in urls:
+            continue
+        urls.append(url)
+        pairs[category] = url
+    return pairs
