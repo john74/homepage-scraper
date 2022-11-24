@@ -3,7 +3,7 @@ from datetime import datetime, date
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from driver import driver
-from .variables import WEBSITE
+from .variables import WEBSITE, ARTICLE
 
 
 def get_category_urls(anchor_elements):
@@ -32,3 +32,19 @@ def get_category_name_url_pairs(category_urls):
         category = url.split('/')[-1]
         pairs[category] = url
     return pairs
+
+
+def get_category_name_article_url_pairs(category_name_url_pairs):
+    """
+    Returns the name of the category and the url of the
+    first article of each category as key value pairs.
+    key: the category name.
+    value: the url of the first article.
+    """
+    article_urls = {}
+    for name, url in category_name_url_pairs.items():
+        driver.get(url)
+        anchor_element = driver.find_element(By.CSS_SELECTOR, ARTICLE['url'])
+        article_url = anchor_element.get_attribute('href')
+        article_urls[name] = article_url.strip()
+    return article_urls
