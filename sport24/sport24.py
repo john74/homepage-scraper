@@ -32,3 +32,4 @@ def store_articles(category, db: Session = Depends(get_db)):
     anchor_elements = CATEGORY_SELECTORS[category]
     category_urls = scraper.get_category_urls(anchor_elements)
     category_name_url_pairs = scraper.get_category_name_url_pairs(category_urls)
+    category_name_article_url_pairs = scraper.get_category_name_article_url_pairs(category_name_url_pairs)
