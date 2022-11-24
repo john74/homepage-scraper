@@ -28,11 +28,14 @@ def get_db():
 
 
 @router.post("/api/store-sport24-articles")
-def store_articles(category, db: Session = Depends(get_db)):
-    anchor_elements = CATEGORY_SELECTORS[category]
+def store_articles(main_category, db: Session = Depends(get_db)):
+    anchor_elements = CATEGORY_SELECTORS[main_category]
     category_urls = scraper.get_category_urls(anchor_elements)
     category_name_url_pairs = scraper.get_category_name_url_pairs(category_urls)
     recent_articles = scraper.get_recent_articles(category_name_url_pairs)
     unique_pairs = scraper.get_unique_pairs(recent_articles)
     url_accepted_pairs = scraper.get_url_accepted_pairs(unique_pairs)
-    articles = scraper.get_articles(url_accepted_pairs)
+    articles = scraper.get_articles(url_accepted_pairs, main_category)
+
+    if not articles:
+        return
