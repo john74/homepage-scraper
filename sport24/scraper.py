@@ -1,5 +1,4 @@
 import re
-from datetime import datetime, date
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from driver import driver
