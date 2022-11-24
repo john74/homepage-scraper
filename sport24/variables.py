@@ -27,11 +27,12 @@ ARTICLE = {
     'author': '.article-single__byline span',
     'datetime': '.article-single__byline > time',
     'post_date': 'time.article__date',
-    'time_unit': 'ημερες',
-    'time_value': 4,
     'image': 'figure > [srcset]',
     'images': r'(http.+\w+),?',
-    'body': '.article-single__body > p'
+    'body': '.article-single__body > p',
+    'time_unit': 'ημερες',
+    'time_value': 4,
+    'min_word_number': 10,
 }
 
 REJECTED_URL_SUBSTRINGS = [
