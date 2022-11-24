@@ -87,3 +87,41 @@ def get_url_accepted_pairs(unique_pairs):
             else:
                 pairs[category] = url
     return pairs
+
+
+def get_articles(url_accepted_pairs):
+    """
+    Returns a list of objects which contain the contents
+    of the article, like the title, the author etc.
+    """
+    article_contents = []
+    for category, url in url_accepted_pairs.items():
+        driver.get(url)
+        try:
+            content = driver.find_element(By.CSS_SELECTOR, ARTICLE['content'])
+        except NoSuchElementException:
+            continue
+
+        author = content.find_element(By.CSS_SELECTOR, ARTICLE['author']).text
+        date_time = content.find_element(
+            By.CSS_SELECTOR, ARTICLE['datetime']
+        ).text.split(' ')
+        image_srcset = content.find_element(
+            By.CSS_SELECTOR, ARTICLE['image']
+        ).get_attribute('srcset')
+        title = content.find_element(By.CSS_SELECTOR, ARTICLE['title']).text
+        body = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
+
+        article_contents.append({
+            "website": WEBSITE['name'],
+            "category": category.strip(),
+            "url": url.strip(),
+            "images": image_srcset.strip(),
+            "author": author.strip(),
+            "post_date": date_time[0].strip(),
+            "post_time": date_time[-1].strip(),
+            "title": title.strip(),
+            "body": [paragraph.text.strip() for paragraph in body]
+        })
+    driver.quit()
+    return article_contents
