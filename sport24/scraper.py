@@ -169,5 +169,4 @@ def get_articles(url_accepted_pairs, main_category):
         article['category'] = category.strip()
         articles.append(article)
 
-    driver.quit()
     return articles
