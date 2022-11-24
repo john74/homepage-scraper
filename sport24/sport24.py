@@ -40,8 +40,33 @@ def store_articles(main_category, db: Session = Depends(get_db)):
     if not articles:
         return
 
+    for article in articles:
+        existing_article = db.query(Article).filter(
+            Article.main_category == main_category,
+            Article.category == article['category'],
+            Article.website == article['website']
+        ).scalar()
 
-@router.get("/api/sport24-articles")
+        if existing_article:
+            existing_article.website = article['website']
+            existing_article.main_category = main_category
+            existing_article.category = article['category']
+            existing_article.url = article['url']
+            existing_article.author = article['author']
+            existing_article.post_date = article['post_date']
+            existing_article.post_time = article['post_time']
+            existing_article.images = article['images']
+            existing_article.title = article['title']
+            existing_article.body = article['body']
+        else:
+            article['main_category'] = main_category
+            new_article = Article(**article)
+            db.add(new_article)
+
+        db.commit()
+
+
+@router.get("/api/get-sport24-articles")
 def get_articles(main_category, db: Session = Depends(get_db)):
     articles = db.query(Article).filter(Article.main_category == main_category).all()
     return articles
