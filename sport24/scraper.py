@@ -115,43 +115,59 @@ def sanitize_body_content(body_content):
     return body[:-2]
 
 
+def get_article(content):
+    """
+    Returns a dictionary with the article content,
+    like the title, the author etc.
+    """
+    try:
+        author = content.find_element(By.CSS_SELECTOR, ARTICLE['author'])
+        date_time = content.find_element(By.CSS_SELECTOR, ARTICLE['datetime'])
+        title = content.find_element(By.CSS_SELECTOR, ARTICLE['title'])
+        image_element = content.find_element(By.CSS_SELECTOR, ARTICLE['image'])
+        body_content = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
+    except NoSuchElementException:
+        return
+
+    post_date = date_time.text.split(' ')[0]
+    post_time = date_time.text.split(' ')[-1]
+    images = sanitize_image_links(image_element)
+    body = sanitize_body_content(body_content)
+
+    if not body:
+        return
+
+    return {
+        "website": WEBSITE['name'],
+        "images": images.strip(),
+        "author": author.text.strip(),
+        "post_date": post_date.strip(),
+        "post_time": post_time.strip(),
+        "title": title.text.strip(),
+        "body": body.strip()
+    }
+
+
 def get_articles(url_accepted_pairs, main_category):
     """
-    Returns a list of objects which contain the contents
-    of the article, like the title, the author etc.
+    Returns a list of dictionaries with all available articles.
     """
-    article_contents = []
+    articles = []
     for category, url in url_accepted_pairs.items():
         driver.get(url)
         try:
             content = driver.find_element(By.CSS_SELECTOR, ARTICLE['content'])
-            author = content.find_element(By.CSS_SELECTOR, ARTICLE['author'])
-            date_time = content.find_element(By.CSS_SELECTOR, ARTICLE['datetime'])
-            title = content.find_element(By.CSS_SELECTOR, ARTICLE['title'])
-            image_element = content.find_element(By.CSS_SELECTOR, ARTICLE['image'])
-            body_content = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
         except NoSuchElementException:
             continue
 
-        post_date = date_time.text.split(' ')[0]
-        post_time = date_time.text.split(' ')[-1]
-        images = sanitize_image_links(image_element)
-        body = sanitize_body_content(body_content)
-
-        if not body:
+        article = get_article(content)
+        if not article:
             continue
 
-        article_contents.append({
-            "website": WEBSITE['name'],
-            "main_category": main_category.strip(),
-            "category": category.strip(),
-            "url": url.strip(),
-            "images": images.strip(),
-            "author": author.text.strip(),
-            "post_date": post_date.strip(),
-            "post_time": post_time.strip(),
-            "title": title.text.strip(),
-            "body": body.strip()
-        })
+        article['url'] = url.strip()
+        article['main_category'] = main_category.strip()
+        article['category'] = category.strip()
+        articles.append(article)
+
     driver.quit()
-    return article_contents
+    return articles
