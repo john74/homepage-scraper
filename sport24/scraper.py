@@ -34,30 +34,39 @@ def get_category_name_url_pairs(category_urls):
     return pairs
 
 
-def get_category_name_article_url_pairs(category_name_url_pairs):
+def get_recent_articles(category_name_url_pairs):
     """
     Returns the name of the category and the url of the
-    first article of each category as key value pairs.
-    key: the category name.
-    value: the url of the first article.
+    first article of each category as key value pairs,
+    if the article is less that 4 days old.
+    KEY: the category name.
+    VALUE: the url of the first article.
     """
-    article_urls = {}
+    recent_articles = {}
     for name, url in category_name_url_pairs.items():
         driver.get(url)
-        anchor_element = driver.find_element(By.CSS_SELECTOR, ARTICLE['url'])
-        article_url = anchor_element.get_attribute('href')
-        article_urls[name] = article_url.strip()
-    return article_urls
+        post_date_info_list = driver.find_element(
+            By.CSS_SELECTOR, ARTICLE['post_date']
+        ).text.lower().split(' ')
+        time_unit = post_date_info_list[1]
+        time_value = int(post_date_info_list[0])
+        article_is_recent = time_unit != ARTICLE['time_unit'] or \
+                            time_value < ARTICLE['time_value']
+        if article_is_recent:
+            anchor_element = driver.find_element(By.CSS_SELECTOR, ARTICLE['url'])
+            article_url = anchor_element.get_attribute('href')
+            recent_articles[name] = article_url.strip()
+    return recent_articles
 
 
-def get_unique_pairs(category_name_article_url_pairs):
+def get_unique_pairs(recent_articles):
     """
     Rejects the keys that have the same value with other keys
     in the dictionary, and returns the unique pairs.
     """
     pairs = {}
     urls = []
-    for category, url in category_name_article_url_pairs.items():
+    for category, url in recent_articles.items():
         if url in urls:
             continue
         urls.append(url)
