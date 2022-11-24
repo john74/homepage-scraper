@@ -39,3 +39,9 @@ def store_articles(main_category, db: Session = Depends(get_db)):
 
     if not articles:
         return
+
+
+@router.get("/api/sport24-articles")
+def get_articles(main_category, db: Session = Depends(get_db)):
+    articles = db.query(Article).filter(Article.main_category == main_category).all()
+    return articles
