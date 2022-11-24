@@ -3,7 +3,7 @@ from datetime import datetime, date
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from driver import driver
-from .variables import WEBSITE, ARTICLE
+from .variables import WEBSITE, ARTICLE, REJECTED_URL_SUBSTRINGS
 
 
 def get_category_urls(anchor_elements):
@@ -71,4 +71,19 @@ def get_unique_pairs(recent_articles):
             continue
         urls.append(url)
         pairs[category] = url
+    return pairs
+
+
+def get_url_accepted_pairs(unique_pairs):
+    """
+    Returns the articles whose url does not contain
+    any of the substrings inside REJECTED_URL_SUBSTRINGS
+    """
+    pairs = {}
+    for category, url in unique_pairs.items():
+        for substring in REJECTED_URL_SUBSTRINGS:
+            if substring in url:
+                break
+            else:
+                pairs[category] = url
     return pairs
