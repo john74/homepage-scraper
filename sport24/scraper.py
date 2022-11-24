@@ -89,7 +89,34 @@ def get_url_accepted_pairs(unique_pairs):
     return pairs
 
 
-def get_articles(url_accepted_pairs):
+def sanitize_image_links(image_element):
+    """
+    Removes any unwanted characters like spaces and new lines
+    from the value of srcset of the image element and returns
+    the srcset as a string.
+    """
+    images_list = re.findall(ARTICLE['images'], image_element.get_attribute('srcset'))
+    images = ''
+    for image in images_list:
+        images += image + ','
+    return images[:-1]
+
+def sanitize_body_content(body_content):
+    """
+    Removes any paragraphs which are less than 11 words long,
+    and returns the body content as a string.
+    """
+    body = ''
+    for tag in body_content:
+        text = tag.text
+        number_of_words = len(text.split(' '))
+        text_is_a_paragrapgh = number_of_words > ARTICLE['min_word_number']
+        if text_is_a_paragrapgh:
+            body += text.strip() + '\n'
+    return body[:-2]
+
+
+def get_articles(url_accepted_pairs, main_category):
     """
     Returns a list of objects which contain the contents
     of the article, like the title, the author etc.
@@ -99,29 +126,33 @@ def get_articles(url_accepted_pairs):
         driver.get(url)
         try:
             content = driver.find_element(By.CSS_SELECTOR, ARTICLE['content'])
+            author = content.find_element(By.CSS_SELECTOR, ARTICLE['author'])
+            date_time = content.find_element(By.CSS_SELECTOR, ARTICLE['datetime'])
+            title = content.find_element(By.CSS_SELECTOR, ARTICLE['title'])
+            image_element = content.find_element(By.CSS_SELECTOR, ARTICLE['image'])
+            body_content = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
         except NoSuchElementException:
             continue
 
-        author = content.find_element(By.CSS_SELECTOR, ARTICLE['author']).text
-        date_time = content.find_element(
-            By.CSS_SELECTOR, ARTICLE['datetime']
-        ).text.split(' ')
-        image_srcset = content.find_element(
-            By.CSS_SELECTOR, ARTICLE['image']
-        ).get_attribute('srcset')
-        title = content.find_element(By.CSS_SELECTOR, ARTICLE['title']).text
-        body = content.find_elements(By.CSS_SELECTOR, ARTICLE['body'])
+        post_date = date_time.text.split(' ')[0]
+        post_time = date_time.text.split(' ')[-1]
+        images = sanitize_image_links(image_element)
+        body = sanitize_body_content(body_content)
+
+        if not body:
+            continue
 
         article_contents.append({
             "website": WEBSITE['name'],
+            "main_category": main_category.strip(),
             "category": category.strip(),
             "url": url.strip(),
-            "images": image_srcset.strip(),
-            "author": author.strip(),
-            "post_date": date_time[0].strip(),
-            "post_time": date_time[-1].strip(),
-            "title": title.strip(),
-            "body": [paragraph.text.strip() for paragraph in body]
+            "images": images.strip(),
+            "author": author.text.strip(),
+            "post_date": post_date.strip(),
+            "post_time": post_time.strip(),
+            "title": title.text.strip(),
+            "body": body.strip()
         })
     driver.quit()
     return article_contents
