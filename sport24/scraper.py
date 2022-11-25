@@ -129,13 +129,12 @@ def get_article(content):
     except NoSuchElementException:
         return
 
+    body = sanitize_body_content(body_content)
+    if not body or author.lower() == WEBSITE['name']:
+        return
     post_date = date_time.text.split(' ')[0]
     post_time = date_time.text.split(' ')[-1]
     images = sanitize_image_links(image_element)
-    body = sanitize_body_content(body_content)
-
-    if not body:
-        return
 
     return {
         "website": WEBSITE['name'],
