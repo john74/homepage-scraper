@@ -9,7 +9,7 @@ class Article(Base):
     website = Column(String)
     main_category = Column(String)
     category = Column(String)
-    url = Column(String)
+    url = Column(String, unique=True, nullable=False)
     author = Column(String)
     post_date = Column(String)
     post_time = Column(String)
