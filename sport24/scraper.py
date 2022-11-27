@@ -114,7 +114,7 @@ def sanitize_body_content(body_content):
         text_is_a_paragrapgh = number_of_words > ARTICLE['min_word_number']
         if text_is_a_paragrapgh:
             body += text.strip() + '\n'
-    return body[:-2]
+    return body[:-2] + '.'
 
 
 def get_article(content):
