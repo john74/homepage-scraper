@@ -17,7 +17,8 @@ CATEGORY_SELECTORS = {
 WEBSITE = {
     'url': 'https://www.sport24.gr/',
     'name': 'sport24.gr',
-    'date_format': '%d.%m.%Y'
+    'date_format': '%d.%m.%Y',
+    'time_format': '%H:%M'
 }
 
 ARTICLE = {
@@ -30,7 +31,7 @@ ARTICLE = {
     'image': 'figure > [srcset]',
     'images': r'(http.+\w+),?',
     'body': '.article-single__body > p',
-    'time_unit': 'ημερες',
+    'time_unit': 'η',
     'time_value': 4,
     'min_word_number': 10,
 }
