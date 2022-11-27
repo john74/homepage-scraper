@@ -41,6 +41,10 @@ def store_articles(main_category, db: Session = Depends(get_db)):
         return
 
     for article in articles:
+        article_with_same_url = db.query(Article).filter(Article.url == article['url']).scalar()
+        if article_with_same_url:
+            continue
+
         existing_article = db.query(Article).filter(
             Article.main_category == main_category,
             Article.category == article['category'],
@@ -49,7 +53,7 @@ def store_articles(main_category, db: Session = Depends(get_db)):
 
         if existing_article:
             existing_article.website = article['website']
-            existing_article.main_category = main_category
+            existing_article.main_category = article['main_category']
             existing_article.category = article['category']
             existing_article.url = article['url']
             existing_article.author = article['author']
@@ -59,11 +63,12 @@ def store_articles(main_category, db: Session = Depends(get_db)):
             existing_article.title = article['title']
             existing_article.body = article['body']
         else:
-            article['main_category'] = main_category
             new_article = Article(**article)
             db.add(new_article)
 
         db.commit()
+
+    return articles
 
 
 @router.get("/api/get-sport24-articles")
