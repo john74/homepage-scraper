@@ -1,6 +1,12 @@
 BASE_URL = 'https://upload.wikimedia.org/wikipedia/en/thumb'
 LOGOS = {
     "england": {
+        "national_team": {},
+        "premier_league": {
+            "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Premier_League_Logo.svg/1920px-Premier_League_Logo.svg.png",
+            "website": "https://www.premierleague.com/",
+            "wikipedia": "https://en.wikipedia.org/wiki/Premier_League"
+        },
         "england": f"{BASE_URL}/8/8b/England_national_football_team_crest.svg/800px-England_national_football_team_crest.svg.png",
         "arsenal": f"{BASE_URL}/5/53/Arsenal_FC.svg/800px-Arsenal_FC.svg.png",
         "aston_villa": f"{BASE_URL}/f/f9/Aston_Villa_FC_crest_%282016%29.svg/800px-Aston_Villa_FC_crest_%282016%29.svg.png",
@@ -134,6 +140,11 @@ LOGOS = {
         "gloucester_city": "https://upload.wikimedia.org/wikipedia/en/6/6d/Gloucester_city_afc_logo.png",
         "hereford": "https://upload.wikimedia.org/wikipedia/en/3/35/Hereford_F.C._logo.png",
         "kettering_town": "https://upload.wikimedia.org/wikipedia/en/2/21/KetteringTFC.png",
-        "kidderminster_harriers": "https://upload.wikimedia.org/wikipedia/en/a/ae/Kidderminster_Harriers_F.C._logo.png"
+        "kidderminster_harriers": "https://upload.wikimedia.org/wikipedia/en/a/ae/Kidderminster_Harriers_F.C._logo.png",
+        "king's_lynn_town": "https://upload.wikimedia.org/wikipedia/en/d/d6/King%27s_Lynn_Town_FC.png",
+        "leamington": "https://upload.wikimedia.org/wikipedia/en/a/a4/Leamingtonfcbadge.png",
+        "peterborough_sports": "https://upload.wikimedia.org/wikipedia/en/9/91/Psfclogo_51273d5034f57.png",
+        "scarborough_athletic": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Scarborough-athletic-fc.png/800px-Scarborough-athletic-fc.png",
+        "southport": "https://upload.wikimedia.org/wikipedia/en/7/70/SouthportFC.png",
     }
 }
