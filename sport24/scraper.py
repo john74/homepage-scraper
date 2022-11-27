@@ -47,10 +47,12 @@ def get_recent_articles(category_name_url_pairs):
         post_date_info_list = driver.find_element(
             By.CSS_SELECTOR, ARTICLE['post_date']
         ).text.lower().split(' ')
+        time_value = post_date_info_list[0]
+        if len(time_value) > 2:
+            continue
         time_unit = post_date_info_list[1]
-        time_value = int(post_date_info_list[0])
-        article_is_recent = time_unit != ARTICLE['time_unit'] or \
-                            time_value < ARTICLE['time_value']
+        article_is_recent = not time_unit.startswith(ARTICLE['time_unit']) or \
+                            int(time_value) < ARTICLE['time_value']
         if article_is_recent:
             anchor_element = driver.find_element(By.CSS_SELECTOR, ARTICLE['url'])
             article_url = anchor_element.get_attribute('href')
@@ -130,7 +132,7 @@ def get_article(content):
         return
 
     body = sanitize_body_content(body_content)
-    if not body or author.lower() == WEBSITE['name']:
+    if not body or author.text.lower() == WEBSITE['name']:
         return
     post_date = date_time.text.split(' ')[0]
     post_time = date_time.text.split(' ')[-1]
@@ -140,8 +142,8 @@ def get_article(content):
         "website": WEBSITE['name'],
         "images": images.strip(),
         "author": author.text.strip(),
-        "post_date": post_date.strip(),
-        "post_time": post_time.strip(),
+        "post_date": post_date,
+        "post_time": post_time,
         "title": title.text.strip(),
         "body": body.strip()
     }
